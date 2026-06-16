@@ -104,3 +104,9 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Local editor settings
+.vscode/
+
+# Unity recovery files
+Assets/_Recovery/
