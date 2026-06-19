@@ -110,3 +110,6 @@ InitTestScene*.unity*
 
 # Unity recovery files
 Assets/_Recovery/
+
+# Vendor demo scenes
+Assets/SimpleNaturePack/Scenes/
