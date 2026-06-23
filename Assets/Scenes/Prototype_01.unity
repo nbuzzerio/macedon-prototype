@@ -2245,6 +2245,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: GroundLayers.m_Bits
       value: 1
       objectReference: {fileID: 0}
@@ -2267,6 +2271,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2098877358}
+    - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2098877359}
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!1 &598394292 stripped
 GameObject:
@@ -5088,22 +5095,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   animator: {fileID: 598394293}
-  controller: {fileID: 2098877355}
+  controller: {fileID: 0}
   punchHitbox: {fileID: 1277213823}
   punchLockDuration: 0.75
   hitboxActiveDelay: 0.25
   hitboxActiveDuration: 0.2
---- !u!114 &2098877355 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
-  m_PrefabInstance: {fileID: 598394291}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 598394292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2098877357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5133,6 +5129,26 @@ MonoBehaviour:
   fallDuration: 1.2
   fallRotation: {x: 0, y: 0, z: 90}
   downwardOffset: -0.25
+--- !u!114 &2098877359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598394292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f936d1d2beb8d04e8adaa7b381f4838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatMovementController
+  forwardSpeed: 2
+  sprintSpeed: 8
+  strafeSpeed: 2
+  backpedalSpeed: 1.1
+  jumpHeight: 1.2
+  gravity: -15
+  lookSensitivity: 1
+  doubleTapWindow: 0.3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

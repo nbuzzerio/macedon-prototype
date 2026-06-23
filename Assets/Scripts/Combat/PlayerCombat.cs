@@ -1,12 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using StarterAssets;
 
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private ThirdPersonController controller;
+    [SerializeField] private CombatMovementController controller;
     [SerializeField] private Collider punchHitbox;
     [SerializeField] private float punchLockDuration = 0.75f;
     [SerializeField] private float hitboxActiveDelay = 0.25f;
@@ -14,6 +13,7 @@ public class PlayerCombat : MonoBehaviour
 
     private bool isPunching;
     private Health health;
+    private CharacterController characterController;
 
     private void Awake()
     {
@@ -26,13 +26,15 @@ public class PlayerCombat : MonoBehaviour
 
         if (controller == null)
         {
-            controller = GetComponent<ThirdPersonController>();
+            controller = GetComponent<CombatMovementController>();
         }
 
         if (punchHitbox != null)
         {
             punchHitbox.enabled = false;
         }
+
+        characterController = GetComponent<CharacterController>();
     }
 
     private void Update()
@@ -46,8 +48,11 @@ public class PlayerCombat : MonoBehaviour
         {
             return;
         }
-
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        
+        if (
+            Mouse.current.leftButton.wasPressedThisFrame &&
+            characterController.isGrounded
+        )
         {
             StartCoroutine(Punch());
         }
