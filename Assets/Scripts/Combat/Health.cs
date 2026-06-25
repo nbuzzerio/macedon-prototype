@@ -27,6 +27,13 @@ public class Health : MonoBehaviour
 
         Debug.Log($"{gameObject.name} took {damage} damage. Health: {currentHealth}/{maxHealth}");
 
+        WolfChase wolfChase = GetComponent<WolfChase>();
+
+        if (wolfChase != null && currentHealth > 0)
+        {
+            wolfChase.PlayDamageReaction();
+        }
+
         if (currentHealth <= 0)
         {
             Die();

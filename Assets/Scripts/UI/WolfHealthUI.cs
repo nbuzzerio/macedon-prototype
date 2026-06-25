@@ -5,11 +5,20 @@ using UnityEngine;
 public class WolfHealthUI : MonoBehaviour
 {
     [SerializeField] private Health wolfHealth;
+    [SerializeField] private WolfChase wolfChase;
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private float fadeDelay = 1f;
     [SerializeField] private float fadeDuration = 2f;
 
-    private bool hasStartedFade;
+    private bool hasDied;
+
+    private void Awake()
+    {
+        if (healthText != null)
+        {
+            healthText.gameObject.SetActive(false);
+        }
+    }
 
     private void Update()
     {
@@ -18,10 +27,24 @@ public class WolfHealthUI : MonoBehaviour
             return;
         }
 
-        if (wolfHealth == null)
+        if (wolfHealth == null || wolfChase == null)
+        {
+            healthText.gameObject.SetActive(false);
+            return;
+        }
+
+        if (hasDied)
         {
             return;
         }
+
+        if (!wolfHealth.gameObject.activeInHierarchy || !wolfChase.HasAggro)
+        {
+            healthText.gameObject.SetActive(false);
+            return;
+        }
+
+        healthText.gameObject.SetActive(true);
 
         healthText.text =
             $"Wolf Health: {wolfHealth.CurrentHealth}/{wolfHealth.MaxHealth}";
@@ -30,9 +53,9 @@ public class WolfHealthUI : MonoBehaviour
             wolfHealth.CurrentHealth,
             wolfHealth.MaxHealth);
 
-        if (wolfHealth.CurrentHealth <= 0 && !hasStartedFade)
+        if (wolfHealth.CurrentHealth <= 0)
         {
-            hasStartedFade = true;
+            hasDied = true;
             StartCoroutine(FadeOutHealthText());
         }
     }
@@ -49,6 +72,7 @@ public class WolfHealthUI : MonoBehaviour
             elapsed += Time.deltaTime;
 
             float alpha = 1f - elapsed / fadeDuration;
+
             healthText.color = new Color(
                 startColor.r,
                 startColor.g,

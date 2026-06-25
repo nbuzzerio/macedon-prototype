@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class NPCDialogue : MonoBehaviour
 {
+    [SerializeField] private WolfQuest wolfQuest;
     public GameObject talkPromptUI;
     public GameObject dialogueUI;
 
@@ -17,6 +18,10 @@ public class NPCDialogue : MonoBehaviour
         }
 
         dialogueOpen = !dialogueOpen;
+        if (dialogueOpen && wolfQuest != null)
+        {
+            wolfQuest.StartQuest();
+        }
         dialogueUI.SetActive(dialogueOpen);
         talkPromptUI.SetActive(!dialogueOpen);
     }

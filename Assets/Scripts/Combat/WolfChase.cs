@@ -5,9 +5,11 @@ public class WolfChase : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform player;
+    [SerializeField] private Transform homePoint;
 
     [Header("Detection")]
     [SerializeField] private float detectionRange = 15f;
+    [SerializeField] private float leashRange = 25f;
 
     [Header("Roaming")]
     [SerializeField] private float roamRadius = 10f;
@@ -17,6 +19,7 @@ public class WolfChase : MonoBehaviour
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 1.5f;
     [SerializeField] private int attackDamage = 1;
+    [SerializeField] private float damageInterruptCooldown = 5f;
 
     [Header("Animation Timing")]
     [SerializeField] private float howlDuration = 2.5f;
@@ -28,18 +31,25 @@ public class WolfChase : MonoBehaviour
     private Vector3 spawnPosition;
     private float nextRoamTime;
     private float nextAttackTime;
+    private float nextDamageInterruptTime;
 
     private bool hasAggro;
     private bool hasHowled;
     private bool isHowling;
     private bool isDead;
+    private bool isReturningHome;
+
+    public bool HasAggro => hasAggro;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         selfHealth = GetComponent<Health>();
         animator = GetComponentInChildren<Animator>();
-        spawnPosition = transform.position;
+
+        spawnPosition = homePoint != null
+            ? homePoint.position
+            : transform.position;
     }
 
     private void Update()
@@ -64,6 +74,26 @@ public class WolfChase : MonoBehaviour
         }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceFromHome = Vector3.Distance(transform.position, spawnPosition);
+
+        if (hasAggro && distanceFromHome > leashRange)
+        {
+            ResetAggro();
+            isReturningHome = true;
+            ReturnHome();
+            return;
+        }
+
+        if (isReturningHome)
+        {
+            if (distanceFromHome > 2f)
+            {
+                ReturnHome();
+                return;
+            }
+
+            isReturningHome = false;
+        }
 
         if (distanceToPlayer > detectionRange && !hasAggro)
         {
@@ -100,7 +130,9 @@ public class WolfChase : MonoBehaviour
         {
             hasHowled = true;
             isHowling = true;
+
             StopWolf();
+            FacePlayer();
 
             if (animator != null)
             {
@@ -178,6 +210,20 @@ public class WolfChase : MonoBehaviour
         enabled = false;
     }
 
+    private void ResetAggro()
+    {
+        hasAggro = false;
+        hasHowled = false;
+        isHowling = false;
+        CancelInvoke(nameof(FinishHowl));
+    }
+
+    private void ReturnHome()
+    {
+        SetAnimationState(true, false);
+        agent.SetDestination(spawnPosition);
+    }
+
     private void StopWolf()
     {
         if (agent.enabled)
@@ -197,5 +243,37 @@ public class WolfChase : MonoBehaviour
 
         animator.SetBool("IsMoving", isMoving);
         animator.SetBool("IsChasing", isChasing);
+    }
+
+    private void FacePlayer()
+    {
+        Vector3 directionToPlayer = player.position - transform.position;
+        directionToPlayer.y = 0f;
+
+        if (directionToPlayer.sqrMagnitude <= 0.01f)
+        {
+            return;
+        }
+
+        transform.rotation = Quaternion.LookRotation(directionToPlayer);
+    }
+
+    public void PlayDamageReaction()
+    {
+        if (isDead || animator == null)
+        {
+            return;
+        }
+
+        if (Time.time < nextDamageInterruptTime)
+        {
+            return;
+        }
+
+        animator.ResetTrigger("Attack");
+        animator.SetTrigger("Damage");
+
+        nextAttackTime = Time.time + attackCooldown;
+        nextDamageInterruptTime = Time.time + damageInterruptCooldown;
     }
 }
