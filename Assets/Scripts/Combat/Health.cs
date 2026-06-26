@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private bool destroyOnDeath = true;
+    [SerializeField] private UnityEvent onDeath;
 
     private int currentHealth;
     private bool isDead;
@@ -46,6 +48,8 @@ public class Health : MonoBehaviour
 
         Debug.Log($"{gameObject.name} died.");
 
+        onDeath.Invoke();
+
         DeathFall deathFall = GetComponent<DeathFall>();
 
         if (deathFall != null)
@@ -61,7 +65,7 @@ public class Health : MonoBehaviour
         }
 
         StarterAssets.ThirdPersonController playerController =
-    GetComponent<StarterAssets.ThirdPersonController>();
+            GetComponent<StarterAssets.ThirdPersonController>();
 
         if (playerController != null)
         {
