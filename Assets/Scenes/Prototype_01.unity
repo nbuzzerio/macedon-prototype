@@ -2594,6 +2594,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 135200852}
     m_Modifications:
+    - target: {fileID: 447176006457757406, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4437eb89960e93b49b2429f600fcc61c, type: 2}
+    - target: {fileID: 988770457668127334, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4437eb89960e93b49b2429f600fcc61c, type: 2}
+    - target: {fileID: 4241417011624302833, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4437eb89960e93b49b2429f600fcc61c, type: 2}
     - target: {fileID: 5861351806918642095, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
       propertyPath: m_Name
       value: Wall_01
