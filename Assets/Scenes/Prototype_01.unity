@@ -635,9 +635,9 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1067912670}
-        m_TargetAssemblyTypeName: GameStateUI, Assembly-CSharp
-        m_MethodName: ShowVictoryScreen
+      - m_Target: {fileID: 1063878601}
+        m_TargetAssemblyTypeName: WolfQuest, Assembly-CSharp
+        m_MethodName: CompleteWolfEncounter
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4811,6 +4811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
   wolfQuest: {fileID: 1063878601}
+  dialogueText: {fileID: 1536168872}
   talkPromptUI: {fileID: 2015617297}
   dialogueUI: {fileID: 2087431374}
 --- !u!1 &1664622901
