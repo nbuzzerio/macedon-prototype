@@ -568,6 +568,7 @@ GameObject:
   - component: {fileID: 116819011}
   - component: {fileID: 116819017}
   - component: {fileID: 116819016}
+  - component: {fileID: 116819018}
   m_Layer: 0
   m_Name: Wolf_Enemy
   m_TagString: Untagged
@@ -772,6 +773,19 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &116819018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116819009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13a616b4f5d4491796f0766469ca0b7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatIdentity
+  combatSide: 2
 --- !u!1001 &133169796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2769,6 +2783,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2098877359}
+    - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2098877365}
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!1 &598394292 stripped
 GameObject:
@@ -6520,6 +6537,19 @@ MonoBehaviour:
   gravity: -15
   lookSensitivity: 1
   doubleTapWindow: 0.3
+--- !u!114 &2098877365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598394292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13a616b4f5d4491796f0766469ca0b7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatIdentity
+  combatSide: 1
 --- !u!1001 &5837126084703222568
 PrefabInstance:
   m_ObjectHideFlags: 0

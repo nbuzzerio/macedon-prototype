@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
 
     private int currentHealth;
     private bool isDead;
+    private CombatIdentity combatIdentity;
 
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
@@ -16,11 +17,17 @@ public class Health : MonoBehaviour
     private void Awake()
     {
         currentHealth = maxHealth;
+        combatIdentity = GetComponentInParent<CombatIdentity>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, CombatIdentity source)
     {
         if (isDead)
+        {
+            return;
+        }
+
+        if (source == null || !source.CanDamage(combatIdentity))
         {
             return;
         }

@@ -26,6 +26,7 @@ public class WolfChase : MonoBehaviour
 
     private NavMeshAgent agent;
     private Health selfHealth;
+    private CombatIdentity combatIdentity;
     private Animator animator;
 
     private Vector3 spawnPosition;
@@ -45,6 +46,7 @@ public class WolfChase : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         selfHealth = GetComponent<Health>();
+        combatIdentity = GetComponentInParent<CombatIdentity>();
         animator = GetComponentInChildren<Animator>();
 
         spawnPosition = homePoint != null
@@ -186,7 +188,7 @@ public class WolfChase : MonoBehaviour
 
         if (playerHealth != null)
         {
-            playerHealth.TakeDamage(attackDamage);
+            playerHealth.TakeDamage(attackDamage, combatIdentity);
         }
 
         nextAttackTime = Time.time + attackCooldown;
