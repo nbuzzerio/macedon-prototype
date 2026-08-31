@@ -2179,13 +2179,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.42215532, y: -0.4893839, z: -0.019775188, w: 0.7628219}
-  m_LocalPosition: {x: 183.78366, y: -6.1, z: 90.83699}
+  m_LocalRotation: {x: 0.3475232, y: -0.12135716, z: 0.6386099, w: 0.6757791}
+  m_LocalPosition: {x: 20, y: 60, z: 32.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 174038228}
-  m_LocalEulerAnglesHint: {x: 38.66, y: -77.833, z: -34.596}
+  m_LocalEulerAnglesHint: {x: 38.66, y: -6099, z: -265.8}
 --- !u!1 &421982080
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,6 +2594,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 135200852}
     m_Modifications:
+    - target: {fileID: 95240383594077251, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 447176006457757406, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2602,10 +2606,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4437eb89960e93b49b2429f600fcc61c, type: 2}
+    - target: {fileID: 2471252915028351101, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4241417011624302833, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4437eb89960e93b49b2429f600fcc61c, type: 2}
+    - target: {fileID: 5498628885186486134, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d8ae880f4f206574f8c7e30469c3f992, type: 2}
     - target: {fileID: 5861351806918642095, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
       propertyPath: m_Name
       value: Wall_01
@@ -2650,6 +2662,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7972720363597997990, guid: 137e9b0413df68549aaf472d85940d43, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e4e81483db131eb4e80198e2c15996cc, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
