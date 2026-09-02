@@ -9,7 +9,7 @@ public sealed class SplineRiverMeshEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.HelpBox(
-            "Knot Widths correspond to spline knots in route order. The generated mesh is visual only; rebake the NavMesh after route changes.",
+            "This component represents one independently editable river channel. Knot Widths correspond to this channel's spline knots in route order. Slightly overlap channel endpoints to make forks and rejoins. The generated mesh is visual only; rebake the NavMesh after route changes.",
             MessageType.Info);
 
         DrawDefaultInspector();

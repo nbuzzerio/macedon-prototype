@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 100002}
   - component: {fileID: 100003}
   - component: {fileID: 100004}
+  - component: {fileID: 100005}
   m_Layer: 4
   m_Name: PlaceholderRiver
   m_TagString: Untagged
@@ -46,14 +47,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Spline:
     m_EditModeType: 1
     m_Knots: []
-    m_Length: -1
     m_MetaData: []
     m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
   m_Splines:
   - m_EditModeType: 1
     m_Knots:
@@ -70,7 +78,11 @@ MonoBehaviour:
         y: 0
         z: 1
       Rotation:
-        value: {x: 0, y: 0, z: 0, w: 1}
+        value:
+          x: 0
+          y: 0
+          z: 0
+          w: 1
     - Position:
         x: 0
         y: 0
@@ -84,7 +96,11 @@ MonoBehaviour:
         y: 0
         z: 0
       Rotation:
-        value: {x: 0, y: 0, z: 0, w: 1}
+        value:
+          x: 0
+          y: 0
+          z: 0
+          w: 1
     - Position:
         x: 10
         y: 0
@@ -98,8 +114,11 @@ MonoBehaviour:
         y: 0
         z: -1
       Rotation:
-        value: {x: 0, y: 0, z: 0, w: 1}
-    m_Length: -1
+        value:
+          x: 0
+          y: 0
+          z: 0
+          w: 1
     m_MetaData:
     - Mode: 4
       Tension: 0.33333334
@@ -108,6 +127,14 @@ MonoBehaviour:
     - Mode: 4
       Tension: 0.33333334
     m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
   m_Knots:
     m_KnotsLink: []
 --- !u!114 &100003
@@ -120,7 +147,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25bbd2e1b2cb48688f76679950e834d5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineRiverMesh
   surfaceMeshFilter: {fileID: 200003}
   defaultWidth: 4
@@ -140,15 +167,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
   m_OverrideArea: 1
   m_Area: 1
   m_OverrideGenerateLinks: 0
   m_GenerateLinks: 0
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
-  m_AffectedAgents:
+  m_AffectedAgents: 
+--- !u!114 &100005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91fe159eb3c34ff29b262c7983f3fcb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SplineRiverGroup
+  includeInactiveChannels: 1
 --- !u!1 &200000
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,17 +22,23 @@ public sealed class SplineRiverMesh : MonoBehaviour
     private Mesh generatedMesh;
 
     public IReadOnlyList<float> KnotWidths => knotWidths;
+    public SplineContainer SplineContainer => splineContainer != null
+        ? splineContainer
+        : GetComponent<SplineContainer>();
+    public MeshFilter SurfaceMeshFilter => surfaceMeshFilter;
 
     private void OnEnable()
     {
         CacheComponents();
         Spline.Changed += OnSplineChanged;
+        SplineContainer.SplineAdded += OnSplineAdded;
         Rebuild();
     }
 
     private void OnDisable()
     {
         Spline.Changed -= OnSplineChanged;
+        SplineContainer.SplineAdded -= OnSplineAdded;
     }
 
     private void OnDestroy()
@@ -256,8 +262,42 @@ public sealed class SplineRiverMesh : MonoBehaviour
         if (splineContainer != null && splineContainer.Splines.Count > 0 &&
             changedSpline == splineContainer.Spline)
         {
+            UpdateWidthsForKnotChange(changedSpline, knotIndex, modification);
             SyncWidthCount();
             Rebuild();
+        }
+    }
+
+    private void OnSplineAdded(SplineContainer changedContainer, int splineIndex)
+    {
+        if (changedContainer != splineContainer || splineIndex != 0)
+        {
+            return;
+        }
+
+        SyncWidthCount();
+        Rebuild();
+    }
+
+    private void UpdateWidthsForKnotChange(Spline spline, int knotIndex, SplineModification modification)
+    {
+        if (modification == SplineModification.KnotInserted && knotWidths.Count == spline.Count - 1)
+        {
+            int insertIndex = Mathf.Clamp(knotIndex, 0, knotWidths.Count);
+            float width = defaultWidth;
+
+            if (knotWidths.Count > 0)
+            {
+                int previousIndex = Mathf.Max(0, insertIndex - 1);
+                int nextIndex = Mathf.Min(knotWidths.Count - 1, insertIndex);
+                width = (knotWidths[previousIndex] + knotWidths[nextIndex]) * 0.5f;
+            }
+
+            knotWidths.Insert(insertIndex, width);
+        }
+        else if (modification == SplineModification.KnotRemoved && knotWidths.Count == spline.Count + 1)
+        {
+            knotWidths.RemoveAt(Mathf.Clamp(knotIndex, 0, knotWidths.Count - 1));
         }
     }
 }
