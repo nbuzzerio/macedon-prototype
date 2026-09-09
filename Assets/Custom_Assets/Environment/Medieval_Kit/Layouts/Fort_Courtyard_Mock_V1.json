@@ -1,0 +1,34 @@
+{
+  "formatVersion": 1,
+  "name": "Fort Courtyard Mock V1",
+  "units": "METERS",
+  "grid": { "spacingMeters": 1 },
+  "anchor": {
+    "position": { "x": 0, "y": 0, "z": 0 },
+    "rotationDegrees": 0
+  },
+  "defaultPlacementMode": "FOUNDATION_LEVEL",
+  "deterministicSeed": 1729,
+  "paths": [
+    { "id": "courtyard_south", "assetContractId": 1, "points": [{ "x": -9, "z": -9 }, { "x": 9, "z": -9 }] },
+    { "id": "courtyard_east", "assetContractId": 1, "points": [{ "x": 9, "z": -9 }, { "x": 9, "z": 9 }] },
+    { "id": "courtyard_north", "assetContractId": 1, "points": [{ "x": 9, "z": 9 }, { "x": -9, "z": 9 }] },
+    { "id": "courtyard_west", "assetContractId": 1, "points": [{ "x": -9, "z": 9 }, { "x": -9, "z": -9 }] },
+
+    { "id": "south_structure_south", "assetContractId": 1, "points": [{ "x": -6, "z": -24 }, { "x": 6, "z": -24 }] },
+    { "id": "south_structure_east", "assetContractId": 1, "points": [{ "x": 6, "z": -24 }, { "x": 6, "z": -15 }] },
+    { "id": "south_structure_north", "assetContractId": 1, "points": [{ "x": 6, "z": -15 }, { "x": -6, "z": -15 }] },
+    { "id": "south_structure_west", "assetContractId": 1, "points": [{ "x": -6, "z": -15 }, { "x": -6, "z": -24 }] },
+
+    { "id": "east_structure_south", "assetContractId": 1, "points": [{ "x": 15, "z": -6 }, { "x": 27, "z": -6 }] },
+    { "id": "east_structure_east", "assetContractId": 1, "points": [{ "x": 27, "z": -6 }, { "x": 27, "z": 6 }] },
+    { "id": "east_structure_north", "assetContractId": 1, "points": [{ "x": 27, "z": 6 }, { "x": 15, "z": 6 }] },
+    { "id": "east_structure_west", "assetContractId": 1, "points": [{ "x": 15, "z": 6 }, { "x": 15, "z": -6 }] },
+
+    { "id": "northwest_structure_south", "assetContractId": 1, "points": [{ "x": -27, "z": 15 }, { "x": -15, "z": 15 }] },
+    { "id": "northwest_structure_east", "assetContractId": 1, "points": [{ "x": -15, "z": 15 }, { "x": -15, "z": 24 }] },
+    { "id": "northwest_structure_north", "assetContractId": 1, "points": [{ "x": -15, "z": 24 }, { "x": -27, "z": 24 }] },
+    { "id": "northwest_structure_west", "assetContractId": 1, "points": [{ "x": -27, "z": 24 }, { "x": -27, "z": 15 }] }
+  ],
+  "overlays": []
+}

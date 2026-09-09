@@ -1,0 +1,14 @@
+{
+    "name": "Macedon.LayoutGreybox.EditorTests",
+    "rootNamespace": "Macedon.LayoutGreybox.Tests",
+    "references": [
+        "Macedon.LayoutGreybox",
+        "Macedon.LayoutGreybox.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

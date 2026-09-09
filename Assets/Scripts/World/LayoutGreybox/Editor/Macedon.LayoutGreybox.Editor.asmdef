@@ -1,0 +1,11 @@
+{
+    "name": "Macedon.LayoutGreybox.Editor",
+    "rootNamespace": "Macedon.LayoutGreybox.Editor",
+    "references": [
+        "Macedon.LayoutGreybox"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": true
+}
