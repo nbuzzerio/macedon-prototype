@@ -2,6 +2,44 @@
 
 This document records project-owned Unity production tools, their authoring contracts, and planned extensions. These tools support repeatable scene construction; they are not gameplay systems.
 
+## Terrain Topography Exporter and Viewer
+
+### Export workflow and format
+
+Select a GameObject with a `Terrain` component and run **Tools > MACEDON > Export Terrain Topography**. The editor-only command reads the complete heightmap without changing the scene, Transform, or TerrainData. It writes a deterministic V1 pair beneath `Exports/TerrainTopography` at the project root: `<Terrain>.topography.json` metadata and `<Terrain>.height.raw` samples. Existing pairs require explicit replacement confirmation. The folder is ignored because these are generated interchange files rather than Unity runtime assets.
+
+JSON metadata contains `formatVersion`, terrain name, optional TerrainData asset path, world origin, `sizeMeters`, heightmap resolution, normalized min/max, local-elevation min/max, world-elevation min/max, and a payload descriptor. The RAW payload stores the full heightmap as row-major unsigned 16-bit little-endian normalized values. Decode each value with `normalized = uint16 / 65535`. This is roughly two bytes per height sample and avoids an unwieldy JSON number array while matching Unity Terrain's practical height precision.
+
+World elevation includes Terrain Transform Y exactly as `world elevation = worldOrigin.y + normalized height * sizeMeters.y`. V1 accepts translation, including a negative Terrain base after Height Offset, but rejects rotated or scaled Terrain transforms because their world coordinate meaning would require a broader format contract.
+
+### Coordinate convention
+
+- RAW column index is Unity Terrain local X, ascending from 0 to `sizeMeters.x`.
+- RAW row index is Unity Terrain local Z, ascending from 0 to `sizeMeters.z`.
+- Viewer horizontal is local +X to the right.
+- Viewer vertical is local +Z upward. Canvas screen Y is therefore explicitly projected as `sizeMeters.z - localZ`; payload rows are not reordered or silently flipped.
+- World X/Z are `worldOrigin.x/z + local x/z` in V1.
+- Angles remain compatible with Layout Painter: 0 degrees right, 90 degrees up, 180 degrees left, 270 degrees down.
+
+### Browser inspection workflow
+
+Run the Vite/TypeScript tool in `Tools/TopographyViewer` with `npm install` followed by `npm run dev`. Load or drag both members of an export pair together. The viewer provides elevation color, configurable world-meter contours with major-line emphasis, directional hillshade, a steep-slope overlay, pan/zoom/fit controls, and cursor local/world coordinates, elevation, and slope. It has no Unity connection and remains useful while Unity is closed.
+
+V1 is intentionally read-only. It does not include terrain textures, holes, objects, water, Layout Greybox overlays, tiled terrains, stamps, or reverse import. Dense contours on very high-resolution maps may be CPU intensive.
+
+### Intended next architecture (documentation only)
+
+```text
+Unity Terrain
+→ export topography
+→ browser inspection/editing
+→ produce bounded terrain patch/delta
+→ Unity preview/validate/apply
+→ Undo support
+```
+
+A later pass should keep the exported source immutable and define a separately versioned, bounded patch in terrain-local sample coordinates. The Unity side should verify source identity/resolution, bounds, finite/ranged values, and preview the effect before applying it through a single TerrainData Undo operation. That workflow can address missed riverbed sections, uneven banks, accidental spikes, local slope mistakes, and feature-shape corrections without expanding V1 into terrain stamping or general scene editing.
+
 ## Navigation Rebuild
 
 ### Purpose and usage

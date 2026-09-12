@@ -115,3 +115,9 @@ Assets/_Recovery/
 Assets/SimpleNaturePack/Scenes/
 
 /.dev
+
+# Browser tooling dependencies/build output and local terrain exports
+/Tools/*/node_modules/
+/Tools/*/dist/
+/Tools/*/*.tsbuildinfo
+/Exports/TerrainTopography/
