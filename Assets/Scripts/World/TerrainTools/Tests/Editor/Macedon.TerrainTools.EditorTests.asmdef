@@ -1,0 +1,13 @@
+{
+    "name": "Macedon.TerrainTools.EditorTests",
+    "rootNamespace": "Macedon.TerrainTools.Tests",
+    "references": [
+        "Macedon.TerrainTools.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

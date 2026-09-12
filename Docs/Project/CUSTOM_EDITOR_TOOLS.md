@@ -2,6 +2,40 @@
 
 This document records project-owned Unity production tools, their authoring contracts, and planned extensions. These tools support repeatable scene construction; they are not gameplay systems.
 
+## Navigation Rebuild
+
+### Purpose and usage
+
+**Tools > MACEDON > Rebuild Navigation** rebuilds every `NavMeshSurface` in the active saved scene from its current configured source geometry. Run it after terrain sculpting or offsetting, river/structure generation, or other environment edits that change walkable geometry. The command uses the Unity AI Navigation package's persistent editor bake workflow—the same workflow as the **Bake** button on a `NavMeshSurface` Inspector—and does not add runtime navigation generation or alter AI behavior.
+
+`Prototype_01` currently uses one `NavMeshSurface` on the Terrain GameObject for agent type 0. It collects all scene objects on all layers from render meshes and stores its persistent bake at `Assets/Scenes/Prototype_01/NavMesh-Terrain.asset`; the legacy scene-level NavMeshData reference is empty.
+
+Before baking, the command lists every surface it will rebuild and asks for confirmation. It blocks if the active scene is unsaved, has no surfaces, contains a surface without a valid agent type, or already has a bake running. Multiple surfaces are submitted together and reported individually when the asynchronous bake finishes, including each resulting NavMeshData asset path. Existing surface collection mode, layer mask, geometry mode, agent type, and bake settings are preserved.
+
+After the bake, the Console reports whether each scene `NavMeshAgent` is currently on the NavMesh and whether its position is near compatible navigation. When `Wolf_Enemy` and `WolfSpawnPoint` are present, it also samples the wolf spawn position. For an ad hoc check, select any GameObject with a `NavMeshAgent` and use **Tools > MACEDON > Validate Selected NavMesh Agent**.
+
+### Undo and limitations
+
+A navigation bake replaces persistent NavMeshData through Unity AI Navigation's asset-baking pipeline and marks the owning scene dirty when its reference changes. This is not a normal scene-object edit and is not registered as a dependable Unity Undo operation; use version control to recover earlier baked data. The command considers only `NavMeshSurface` components in the active scene, does not automatically save the scene, and does not move an agent onto the NavMesh. A successful nearby sample means the position is expected to be usable, but final validation still requires entering Play Mode and observing the agent. Sampling searches up to twice the agent height, with a 2 m minimum, using that agent's type and area mask.
+
+## Terrain Height Offset
+
+### Purpose
+
+**Tools > MACEDON > Terrain Height Offset** opens an editor-only utility that raises or lowers every height sample of the selected Unity Terrain by one uniform distance in world meters, then counter-translates that Terrain GameObject by the inverse world-space Y distance. It is intended to create sculpting headroom while preserving existing hills, depressions, relative elevation differences, and the visible surface's world-space position. It changes only the selected `TerrainData` height samples and selected Terrain's Y position; it does not change Terrain X/Z, rotation, scale, dimensions, vertical size, textures, trees, details, holes, water, other GameObjects, or other terrain properties.
+
+### Meter conversion and safety
+
+Unity stores Terrain heights normalized from 0 to 1. The utility calculates `normalized delta = requested meters / TerrainData.size.y`; the vertical range is always read from the selected TerrainData and is never assumed to be 600 m. Thus a +20 m offset on a 600 m vertical range adds `20 / 600` to every sample and moves the Terrain Transform down by 20 world meters. At each sample, `(old Transform Y + old height) = (new Transform Y + new height)`, within Terrain heightmap storage precision.
+
+Before enabling Apply, the utility scans the complete heightmap and previews its current and resulting minimum/maximum heightmap elevations, current/resulting Terrain Transform Y, normalized delta, safe offset range, and approximate downward/upward sculpting headroom. If any resulting sample would be below 0 or above 1, the entire operation is rejected before either object changes. Samples are never individually clamped because clamping would alter the terrain shape. A zero offset is treated as a no-op and dirties neither TerrainData nor Transform.
+
+### Undo and intended workflow
+
+Select the Terrain GameObject, open the window, enter a positive or negative meter offset, and review the preview. **Apply Height Offset** re-scans the heightmap to prevent stale validation and shows a confirmation containing the Terrain name, requested offset, vertical range, current/resulting heightmap ranges, current/resulting Transform Y, and resulting sculpting headroom. Confirming registers both TerrainData and the Terrain Transform in one named Unity Undo group, writes the uniformly offset samples, applies the inverse world-Y translation, marks TerrainData dirty, flushes the Terrain display, and repaints the Scene view. One Undo or Redo restores or reapplies both changes together. The operation is disabled in Play Mode.
+
+For the initial MACEDON learning pass, select the existing Terrain and apply +20 m manually after reviewing the preview. This tool does not automatically modify any Terrain or scene, and it does not implement terrain feature stamping.
+
 ## Palisade Arc Builder
 
 ### Purpose

@@ -11,6 +11,10 @@ public class CombatMovementController : MonoBehaviour
     [SerializeField] private float jumpHeight = 1.2f;
     [SerializeField] private float gravity = -15f;
     [SerializeField] private float lookSensitivity = 1f;
+    [SerializeField] private bool invertVerticalLook = false;
+    [SerializeField] private float minimumPitch = -35f;
+    [SerializeField] private float maximumPitch = 65f;
+    [SerializeField] private Transform cameraPitchTransform;
     [SerializeField] private float doubleTapWindow = 0.3f;
 
     private CharacterController controller;
@@ -18,6 +22,8 @@ public class CombatMovementController : MonoBehaviour
     private Animator animator;
 
     private float verticalVelocity;
+    private float cameraPitch;
+    private float cameraLocalYaw;
     private float lastBackTapTime = -1f;
     private bool wasPressingBack;
 
@@ -32,6 +38,21 @@ public class CombatMovementController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         input = GetComponent<StarterAssetsInputs>();
         animator = GetComponent<Animator>();
+
+        if (cameraPitchTransform == null)
+        {
+            Camera childCamera = GetComponentInChildren<Camera>(true);
+            cameraPitchTransform = childCamera != null
+                ? childCamera.transform
+                : Camera.main != null ? Camera.main.transform : null;
+        }
+
+        if (cameraPitchTransform != null)
+        {
+            Vector3 cameraAngles = cameraPitchTransform.localEulerAngles;
+            cameraPitch = ClampPitch(Mathf.DeltaAngle(0f, cameraAngles.x), minimumPitch, maximumPitch);
+            cameraLocalYaw = cameraAngles.y;
+        }
 
         animIDSpeed = Animator.StringToHash("Speed");
         animIDGrounded = Animator.StringToHash("Grounded");
@@ -54,6 +75,30 @@ public class CombatMovementController : MonoBehaviour
     {
         float mouseX = input.look.x * lookSensitivity;
         transform.Rotate(Vector3.up * mouseX);
+
+        if (cameraPitchTransform == null)
+        {
+            return;
+        }
+
+        cameraPitch = AccumulatePitch(cameraPitch, input.look.y, lookSensitivity, invertVerticalLook, minimumPitch, maximumPitch);
+        cameraPitchTransform.localRotation = Quaternion.Euler(cameraPitch, cameraLocalYaw, 0f);
+    }
+
+    public static float AccumulatePitch(float currentPitch, float mouseY, float sensitivity, bool invertVerticalLook, float minimum, float maximum)
+    {
+        float verticalDirection = invertVerticalLook ? -1f : 1f;
+        return ClampPitch(currentPitch + mouseY * sensitivity * verticalDirection, minimum, maximum);
+    }
+
+    public static float ClampPitch(float pitch, float minimum, float maximum)
+    {
+        if (minimum > maximum)
+        {
+            (minimum, maximum) = (maximum, minimum);
+        }
+
+        return Mathf.Clamp(pitch, minimum, maximum);
     }
 
     private void HandleAboutFace(Vector2 moveInput)

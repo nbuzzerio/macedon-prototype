@@ -1,0 +1,8 @@
+{
+    "name": "Macedon.TerrainTools.Editor",
+    "rootNamespace": "Macedon.TerrainTools.Editor",
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": true
+}

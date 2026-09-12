@@ -10,7 +10,6 @@ namespace Macedon.LayoutGreybox.Editor
         static LayoutGreyboxScaleGuard()
         {
             ObjectChangeEvents.changesPublished += OnChangesPublished;
-            Debug.Log("[LayoutGreyboxScaleGuard DIAGNOSTIC] Initialized and subscribed to ObjectChangeEvents.changesPublished.");
         }
 
         public static bool Enforce(LayoutGreyboxBuilder builder)
