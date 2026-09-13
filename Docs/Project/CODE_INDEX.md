@@ -28,6 +28,11 @@ Custom player movement controller. Handles mouse turning, forward movement, stra
 ### SteepSlopeRules.cs
 Deterministic player-traversal math for slope classification, jump authorization, uphill-input suppression, and downhill direction. `CombatMovementController` applies it from a CharacterController-sized ground probe and recent collision normals.
 
+## Character Visual Tooling
+
+### CharacterVisualVariantsWindow.cs / VarangianVisualVariantLogic.cs
+Editor-only `Tools > MACEDON > Character Visual Variants` workflow for the current single-material Varangian asset. It previews independent, deterministic curated recolors of red-dominant fabric and blue paint within the known round-shield UV island, then creates one private texture/material pair and assigns it to the explicitly selected character with Undo. Both channels are prototype-oriented color-threshold masks over one atlas, not semantic character customization. Source materials/textures are never edited.
+
 ## Dialogue / Quest
 
 ### NPCDialogue.cs

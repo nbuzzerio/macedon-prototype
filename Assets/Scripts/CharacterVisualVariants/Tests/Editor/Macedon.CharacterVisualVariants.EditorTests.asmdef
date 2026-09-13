@@ -1,0 +1,13 @@
+{
+    "name": "Macedon.CharacterVisualVariants.EditorTests",
+    "rootNamespace": "Macedon.CharacterVisualVariants.Tests",
+    "references": [
+        "Macedon.CharacterVisualVariants.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

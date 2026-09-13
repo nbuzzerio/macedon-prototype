@@ -1,0 +1,8 @@
+{
+    "name": "Macedon.CharacterVisualVariants.Editor",
+    "rootNamespace": "Macedon.CharacterVisualVariants.Editor",
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": true
+}

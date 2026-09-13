@@ -14,6 +14,7 @@ This is a living roadmap for production tools. Difficulty is approximate: **1** 
 | Terrain Height Offset tool | 3 | Creates sculpting headroom while preserving world surface elevation, with validation and Undo. |
 | Terrain Topography Exporter | 3 | Exports full-resolution, versioned metadata plus compact deterministic 16-bit height payload. |
 | Terrain Topography Viewer V1 | 4 | Read-only Vite/TypeScript map with elevation color, contours, hillshade, slope, coordinates, pan, and zoom. |
+| Varangian NPC visual variants | 2 | Editor-only selected-character tool creates deterministic fabric + shield-paint variants as private material/atlas copies without mutating the shared Player material. Both channels use asset-specific color-threshold masks over the single Shieldbearer atlas. |
 
 ## CURRENT VERTICAL SLICE
 
@@ -24,7 +25,6 @@ This is a living roadmap for production tools. Difficulty is approximate: **1** 
 | Palisade production replacement workflow | 3 | Reliably replace current fixed-width palisade greyboxes while preserving layout intent. |
 | Greybox → production asset replacer | 4 | Map stable contracts to production prefabs without losing transforms, ownership, or validation. |
 | House support if houses are created | 3 | Add house contracts/placement only once real house assets and repeated placement needs exist. |
-| NPC visual randomization tool, if useful | 2 | Use deterministic, constrained variation only if manual setup becomes a repeated slice bottleneck. |
 
 ## NEAR TERM
 
