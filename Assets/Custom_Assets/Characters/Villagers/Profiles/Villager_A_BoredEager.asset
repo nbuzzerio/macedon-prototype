@@ -19,3 +19,5 @@ MonoBehaviour:
   - You seen anything interesting beyond the ridge?
   recruitReadyDialogue:
   - You actually killed that wolf? Ha! All right. I'll follow you against the raiders.
+  followingDialogue:
+  - Let's go.

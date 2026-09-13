@@ -19,3 +19,5 @@ MonoBehaviour:
   - If you're heading into the woods, watch yourself.
   recruitReadyDialogue:
   - You handled the wolf. Maybe you've got a chance against those raiders after all. I'm with you.
+  followingDialogue:
+  - Lead the way.

@@ -39,7 +39,13 @@ Editor-only `Tools > MACEDON > Character Visual Variants` workflow for the curre
 Trigger-based villager interaction and dialogue UI toggling. With no profile it preserves the original Wolf quest-giver flow; with a `VillagerProfile` it selects deterministic cycling dialogue from Ambient or RecruitReady pools based on Wolf encounter completion and exposes a scene-authored Home anchor.
 
 ### VillagerProfile.cs / VillagerDialogueLogic.cs
-Reusable recruitment-slice data and deterministic selection logic. Three profile assets author distinct villager lines without bespoke scripts. Current states are only Ambient and RecruitReady; no recruitment or movement behavior exists yet.
+Reusable recruitment dialogue data and deterministic selection logic. Three profile assets independently author Ambient, RecruitReady, and Following lines without bespoke scripts.
+
+### VillagerRecruitmentState.cs / VillagerParty.cs / VillagerPartyRegistry.cs
+Recruitment state is separate from dialogue/world state. The small party coordinator holds the explicit Player Transform, registers followers idempotently, assigns stable reusable slot indices, and supports removal for the later abandonment pass.
+
+### VillagerFollower.cs / VillagerFormationLogic.cs
+NavMeshAgent-based following for recruited villagers. Distinct local formation offsets rotate with Player yaw; destination updates are throttled, sampled onto compatible NavMesh, and never issued while an agent is off-mesh. No combat, return-home, or route-deviation behavior is included.
 
 ### WolfQuest.cs
 Starts the wolf quest and activates the wolf encounter.

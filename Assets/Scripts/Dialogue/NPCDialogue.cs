@@ -11,6 +11,7 @@ public class NPCDialogue : MonoBehaviour
     [SerializeField] private VillagerProfile villagerProfile;
     [SerializeField] private WolfEncounterController wolfEncounter;
     [SerializeField] private Transform home;
+    [SerializeField] private VillagerFollower follower;
     [Header("Shared Dialogue UI")]
     [SerializeField] private TextMeshProUGUI dialogueText;
     public GameObject talkPromptUI;
@@ -20,10 +21,17 @@ public class NPCDialogue : MonoBehaviour
     private bool dialogueOpen;
     private int lastAmbientDialogueIndex = -1;
     private int lastRecruitReadyDialogueIndex = -1;
+    private int lastFollowingDialogueIndex = -1;
 
     public VillagerProfile Profile => villagerProfile;
     public Transform Home => home;
-    public VillagerDialogueState CurrentVillagerState => VillagerDialogueLogic.StateForWolfCompletion(IsWolfCompleted());
+    public VillagerDialogueState CurrentVillagerState =>
+        VillagerDialogueLogic.StateFor(IsWolfCompleted(), follower != null && follower.IsFollowing);
+
+    private void Awake()
+    {
+        if (follower == null) follower = GetComponent<VillagerFollower>();
+    }
 
     private void Update()
     {
@@ -92,7 +100,9 @@ public class NPCDialogue : MonoBehaviour
         string[] lines = villagerProfile.DialogueFor(state);
         int previous = state == VillagerDialogueState.Ambient
             ? lastAmbientDialogueIndex
-            : lastRecruitReadyDialogueIndex;
+            : state == VillagerDialogueState.RecruitReady
+                ? lastRecruitReadyDialogueIndex
+                : lastFollowingDialogueIndex;
         int next = VillagerDialogueLogic.NextDialogueIndex(lines == null ? 0 : lines.Length, previous);
         if (next < 0)
         {
@@ -102,7 +112,12 @@ public class NPCDialogue : MonoBehaviour
 
         dialogueText.text = lines[next];
         if (state == VillagerDialogueState.Ambient) lastAmbientDialogueIndex = next;
-        else lastRecruitReadyDialogueIndex = next;
+        else if (state == VillagerDialogueState.RecruitReady)
+        {
+            lastRecruitReadyDialogueIndex = next;
+            if (follower != null) follower.TryRecruit(IsWolfCompleted());
+        }
+        else lastFollowingDialogueIndex = next;
     }
 
     private bool IsWolfCompleted()

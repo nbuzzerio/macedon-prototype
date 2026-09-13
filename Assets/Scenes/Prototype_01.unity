@@ -2940,11 +2940,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4393,11 +4393,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5360,6 +5360,10 @@ PrefabInstance:
     - target: {fileID: 1740499648, guid: d6b4c6b61c594c5888ca45f25ccbf72e, type: 3}
       propertyPath: m_Name
       value: Raider_Test
+      objectReference: {fileID: 0}
+    - target: {fileID: 1740499648, guid: d6b4c6b61c594c5888ca45f25ccbf72e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1740499649, guid: d6b4c6b61c594c5888ca45f25ccbf72e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6800,6 +6804,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60f79905accf3b24fa0114b941f1aac0, type: 3}
+--- !u!1 &808321966
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 808321967}
+  - component: {fileID: 808321968}
+  m_Layer: 0
+  m_Name: VillagerParty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &808321967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808321966}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1454573100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &808321968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808321966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64025696b3ab29f4fa779e19d41dcd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Villagers.VillagerParty
+  player: {fileID: 2098877350}
 --- !u!1 &819482003
 GameObject:
   m_ObjectHideFlags: 0
@@ -8446,7 +8495,7 @@ Transform:
   m_GameObject: {fileID: 966024534}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.83, y: 4.53583, z: 67.82}
+  m_LocalPosition: {x: 1.43, y: 4.53583, z: 67.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8970,6 +9019,8 @@ GameObject:
   - component: {fileID: 1092071880}
   - component: {fileID: 1092071882}
   - component: {fileID: 1092071881}
+  - component: {fileID: 1092071884}
+  - component: {fileID: 1092071883}
   m_Layer: 0
   m_Name: Villager_C
   m_TagString: Untagged
@@ -8986,7 +9037,7 @@ Transform:
   m_GameObject: {fileID: 1092071879}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.71835405, z: -0, w: 0.6956777}
-  m_LocalPosition: {x: 7.21, y: 0, z: -14.13}
+  m_LocalPosition: {x: 5.92, y: 0.37, z: -14.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9009,6 +9060,7 @@ MonoBehaviour:
   villagerProfile: {fileID: 11400000, guid: e75f8091f49016542a5bb009dabb3cc6, type: 2}
   wolfEncounter: {fileID: 1241525029}
   home: {fileID: 1076806965}
+  follower: {fileID: 0}
   dialogueText: {fileID: 1536168872}
   talkPromptUI: {fileID: 2015617297}
   dialogueUI: {fileID: 2087431374}
@@ -9033,6 +9085,45 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1092071883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092071879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15eb59bb2e2604d4e96653e294364602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Villagers.VillagerFollower
+  party: {fileID: 808321968}
+  targetTolerance: 0.65
+  repathInterval: 0.2
+  initialNavMeshSearchRadius: 2
+  targetNavMeshSearchRadius: 1.5
+--- !u!195 &1092071884
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092071879}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 4
+  m_Acceleration: 10
+  avoidancePriority: 50
+  m_AngularSpeed: 360
+  m_StoppingDistance: 0.4
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1092746240
 GameObject:
   m_ObjectHideFlags: 0
@@ -11253,6 +11344,7 @@ Transform:
   - {fileID: 2036857515}
   - {fileID: 1063878600}
   - {fileID: 1241525027}
+  - {fileID: 808321967}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1470255985
@@ -12472,6 +12564,7 @@ MonoBehaviour:
   villagerProfile: {fileID: 0}
   wolfEncounter: {fileID: 0}
   home: {fileID: 0}
+  follower: {fileID: 0}
   dialogueText: {fileID: 1536168872}
   talkPromptUI: {fileID: 2015617297}
   dialogueUI: {fileID: 2087431374}
@@ -13626,6 +13719,8 @@ GameObject:
   - component: {fileID: 1730423455}
   - component: {fileID: 1730423457}
   - component: {fileID: 1730423456}
+  - component: {fileID: 1730423459}
+  - component: {fileID: 1730423458}
   m_Layer: 0
   m_Name: Villager_A
   m_TagString: Untagged
@@ -13642,7 +13737,7 @@ Transform:
   m_GameObject: {fileID: 1730423454}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: -27}
+  m_LocalPosition: {x: -10, y: 0.368, z: -26.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13665,6 +13760,7 @@ MonoBehaviour:
   villagerProfile: {fileID: 11400000, guid: f898f601bff568341ab6008fa2e14d1b, type: 2}
   wolfEncounter: {fileID: 1241525029}
   home: {fileID: 1272508989}
+  follower: {fileID: 0}
   dialogueText: {fileID: 1536168872}
   talkPromptUI: {fileID: 2015617297}
   dialogueUI: {fileID: 2087431374}
@@ -13689,6 +13785,45 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1730423458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730423454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15eb59bb2e2604d4e96653e294364602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Villagers.VillagerFollower
+  party: {fileID: 808321968}
+  targetTolerance: 0.65
+  repathInterval: 0.2
+  initialNavMeshSearchRadius: 2
+  targetNavMeshSearchRadius: 1.5
+--- !u!195 &1730423459
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730423454}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 4
+  m_Acceleration: 10
+  avoidancePriority: 50
+  m_AngularSpeed: 360
+  m_StoppingDistance: 0.4
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1737481531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13841,11 +13976,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8441158680964949346, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15891,6 +16026,8 @@ GameObject:
   - component: {fileID: 2025579092}
   - component: {fileID: 2025579094}
   - component: {fileID: 2025579093}
+  - component: {fileID: 2025579096}
+  - component: {fileID: 2025579095}
   m_Layer: 0
   m_Name: Villager_B
   m_TagString: Untagged
@@ -15907,7 +16044,7 @@ Transform:
   m_GameObject: {fileID: 2025579091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.6754089, z: -0, w: 0.73744345}
-  m_LocalPosition: {x: -7.42, y: 0, z: -14.06}
+  m_LocalPosition: {x: -6.18, y: 0.36, z: -14.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15930,6 +16067,7 @@ MonoBehaviour:
   villagerProfile: {fileID: 11400000, guid: 8ab7ecdb9cc4c79468b2907263972766, type: 2}
   wolfEncounter: {fileID: 1241525029}
   home: {fileID: 1666758419}
+  follower: {fileID: 0}
   dialogueText: {fileID: 1536168872}
   talkPromptUI: {fileID: 2015617297}
   dialogueUI: {fileID: 2087431374}
@@ -15954,6 +16092,45 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2025579095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025579091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15eb59bb2e2604d4e96653e294364602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Villagers.VillagerFollower
+  party: {fileID: 808321968}
+  targetTolerance: 0.65
+  repathInterval: 0.2
+  initialNavMeshSearchRadius: 2
+  targetNavMeshSearchRadius: 1.5
+--- !u!195 &2025579096
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025579091}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 4
+  m_Acceleration: 10
+  avoidancePriority: 50
+  m_AngularSpeed: 360
+  m_StoppingDistance: 0.4
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &2035272955
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,13 +3,17 @@ namespace Macedon.Villagers
     public enum VillagerDialogueState
     {
         Ambient,
-        RecruitReady
+        RecruitReady,
+        Following
     }
 
     public static class VillagerDialogueLogic
     {
         public static VillagerDialogueState StateForWolfCompletion(bool wolfCompleted) =>
             wolfCompleted ? VillagerDialogueState.RecruitReady : VillagerDialogueState.Ambient;
+
+        public static VillagerDialogueState StateFor(bool wolfCompleted, bool isFollowing) =>
+            isFollowing ? VillagerDialogueState.Following : StateForWolfCompletion(wolfCompleted);
 
         public static int NextDialogueIndex(int lineCount, int previousIndex)
         {

@@ -53,7 +53,9 @@ MACEDON now has a small playable vertical slice with a beginning, middle, and en
 - Shared `NPCDialogue` interaction now supports optional data-driven villager profiles while preserving the original Wolf quest-giver behavior.
 - Three prototype profiles provide distinct ambient and post-Wolf RecruitReady dialogue pools.
 - Recruitable villagers reference the encounter completion state rather than Wolf health and expose an authored Home Transform for later movement behavior.
-- This slice stops at Ambient → RecruitReady. Recruiting, following, and multiple simultaneous followers are the next pass.
+- RecruitReady interaction now recruits each villager independently and idempotently into a small shared party registry.
+- Up to three villagers follow simultaneously in stable left-rear, right-rear, and far-rear slots using throttled, sampled NavMesh destinations.
+- Following dialogue remains profile-authored. Route warnings, abandonment, return-home movement, re-recruitment, and ally combat are not implemented.
 
 ## UI
 
