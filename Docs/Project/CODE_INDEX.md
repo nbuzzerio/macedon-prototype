@@ -47,6 +47,9 @@ Optionally commits a tagged player on volume entry and enables only the explicit
 ### LocalCameraShake.cs
 Reusable local positional camera shake with a decaying envelope. It removes its previous offset before applying the next one and restores the target when finished or disabled.
 
+### WolfEncounterCinematic.cs / WolfCinematicSequenceState.cs
+Small Wolf-death presentation sequence. It locally takes player camera/movement input, frames the animated Wolf death, triggers impact shake, turns toward an authored tree focus, starts the tree/exit reveal, releases deferred encounter collision, and returns camera ownership without snapping. The timeline is deterministic and presentation-only.
+
 ### EncounterTreeFallResponder.cs / EncounterExitResponder.cs
 Inspector-configured, one-shot completion presentation: stagger selected scene-tree rotations and enable/disable route objects or collision. These do not alter Terrain-painted tree data.
 

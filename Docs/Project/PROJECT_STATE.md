@@ -46,6 +46,7 @@ MACEDON now has a small playable vertical slice with a beginning, middle, and en
 - Wolf defeat triggers victory screen
 - Reusable Wolf encounter state, temporary-boundary control, local camera shake, selected-tree fall, and exit reveal components are implemented in code
 - Scene-specific crater blockers, tree GameObjects/pivots, camera target, and completion-event references still require manual Unity placement and tuning
+- Wolf-death cinematic orchestration is implemented in code with Inspector-authored Wolf/tree focus points; final camera references, event rewiring, stagger tuning, and Play Mode framing remain manual
 
 ## UI
 

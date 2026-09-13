@@ -1364,6 +1364,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 655847640}
+  - {fileID: 450071475}
   m_Father: {fileID: 1075135093}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!54 &116819011
@@ -4236,6 +4237,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3030171986968133739, guid: 0efadc8c714444d49a10b02f99dff28d, type: 3}
   m_PrefabInstance: {fileID: 448269489}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &450071474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 450071475}
+  m_Layer: 0
+  m_Name: WolfFocus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &450071475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450071474}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 116819010}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &474161410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8114,6 +8146,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3030171986968133739, guid: 0efadc8c714444d49a10b02f99dff28d, type: 3}
   m_PrefabInstance: {fileID: 957270540}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &966024534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 966024535}
+  m_Layer: 0
+  m_Name: TreeFocus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &966024535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966024534}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.83, y: 4.53583, z: 67.82}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1241525027}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &969668645
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9326,6 +9389,8 @@ GameObject:
   - component: {fileID: 1241525029}
   - component: {fileID: 1241525028}
   - component: {fileID: 1241525030}
+  - component: {fileID: 1241525032}
+  - component: {fileID: 1241525031}
   m_Layer: 0
   m_Name: WolfEncounter
   m_TagString: Untagged
@@ -9348,6 +9413,7 @@ Transform:
   m_Children:
   - {fileID: 1811903226}
   - {fileID: 546641978}
+  - {fileID: 966024535}
   m_Father: {fileID: 1454573100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1241525028
@@ -9379,15 +9445,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Macedon.Encounters::Macedon.Encounters.WolfEncounterController
   beginOnEnable: 0
   boundary: {fileID: 1241525028}
+  releaseBoundaryOnCompletion: 0
   onEncounterBegan:
     m_PersistentCalls:
       m_Calls: []
   onEncounterCompleted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1241525030}
-        m_TargetAssemblyTypeName: Macedon.Encounters.EncounterTreeFallResponder,
-          Macedon.Encounters
+      - m_Target: {fileID: 1241525032}
+        m_TargetAssemblyTypeName: Macedon.Encounters.WolfEncounterCinematic, Macedon.Encounters
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -9413,20 +9479,65 @@ MonoBehaviour:
   trees:
   - tree: {fileID: 585086067}
     fallRotation: {x: -25, y: 0, z: 85}
-    delay: 2
+    delay: 0
     duration: 1.2
   - tree: {fileID: 569318556}
-    fallRotation: {x: 25, y: 0, z: -85}
-    delay: 2
+    fallRotation: {x: 25, y: 0, z: -60}
+    delay: 0.12
     duration: 1.2
   - tree: {fileID: 479378923}
-    fallRotation: {x: -25, y: 0, z: -85}
-    delay: 2
+    fallRotation: {x: -25, y: 0, z: -60}
+    delay: 0.25
     duration: 1.2
   - tree: {fileID: 1966847229}
     fallRotation: {x: 25, y: 0, z: 85}
-    delay: 2
+    delay: 0.4
     duration: 1.2
+--- !u!114 &1241525031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241525026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225346530e9942bfbd96d167227bc47c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Encounters.LocalCameraShake
+  shakeTarget: {fileID: 1090592103}
+  duration: 0.65
+  amplitude: 0.32
+  frequency: 28
+--- !u!114 &1241525032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241525026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a75e4d279b740478465cde10be96ffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Encounters.WolfEncounterCinematic
+  gameplayCamera: {fileID: 1090592103}
+  playerControlObject: {fileID: 598394292}
+  wolfFocus: {fileID: 450071475}
+  treeFocus: {fileID: 966024535}
+  cameraShake: {fileID: 1241525031}
+  treeFall: {fileID: 1241525030}
+  exitReveal: {fileID: 0}
+  encounter: {fileID: 1241525029}
+  timing:
+    wolfLookDuration: 0.35
+    wolfHoldDuration: 0.8
+    impactDuration: 0.65
+    treeLookDuration: 0.65
+    treeHoldDuration: 1.25
+  onSequenceCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1251144802
 PrefabInstance:
   m_ObjectHideFlags: 0

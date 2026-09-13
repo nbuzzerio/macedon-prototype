@@ -54,5 +54,45 @@ namespace Macedon.Encounters.Tests
             Assert.That(CameraShakeMath.Offset(0.25f, 1f, 2f, 20f, 7f), Is.EqualTo(first));
             Assert.That(CameraShakeMath.Offset(1f, 1f, 2f, 20f, 7f), Is.EqualTo(Vector3.zero));
         }
+
+        [Test]
+        public void CinematicAdvancesThroughEveryPhaseAndCompletesOnce()
+        {
+            var state = new WolfCinematicSequenceState();
+            WolfCinematicTiming timing = WolfCinematicTiming.Default;
+            int completions = 0;
+            state.PhaseEntered += phase => { if (phase == WolfCinematicPhase.Complete) completions++; };
+
+            Assert.That(state.TryBegin(), Is.True);
+            Assert.That(state.TryBegin(), Is.False);
+            state.Advance(10f, timing);
+            state.Advance(10f, timing);
+
+            Assert.That(state.Phase, Is.EqualTo(WolfCinematicPhase.Complete));
+            Assert.That(completions, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void CinematicRetainsCarryTimeAcrossPhases()
+        {
+            var state = new WolfCinematicSequenceState();
+            WolfCinematicTiming timing = WolfCinematicTiming.Default;
+            state.TryBegin();
+            state.Advance(timing.wolfLookDuration + 0.25f, timing);
+            Assert.That(state.Phase, Is.EqualTo(WolfCinematicPhase.HoldWolf));
+            Assert.That(state.PhaseElapsed, Is.EqualTo(0.25f).Within(0.0001f));
+        }
+
+        [Test]
+        public void LookAndRestoreYawMathAreDeterministic()
+        {
+            Quaternion look = WolfEncounterCinematic.LookRotation(Vector3.zero, new Vector3(1f, 1f, 1f), Quaternion.identity);
+            Assert.That(Vector3.Angle(look * Vector3.forward, new Vector3(1f, 1f, 1f)), Is.LessThan(0.001f));
+
+            Quaternion yaw = WolfEncounterCinematic.FlatYawRotation(look, Quaternion.identity);
+            Vector3 flatForward = yaw * Vector3.forward;
+            Assert.That(flatForward.y, Is.EqualTo(0f).Within(0.0001f));
+            Assert.That(flatForward.x, Is.EqualTo(flatForward.z).Within(0.0001f));
+        }
     }
 }

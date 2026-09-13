@@ -1,9 +1,10 @@
 using UnityEngine;
 using StarterAssets;
 using Macedon.PlayerTraversal;
+using Macedon.Encounters;
 
 [RequireComponent(typeof(CharacterController))]
-public class CombatMovementController : MonoBehaviour
+public class CombatMovementController : MonoBehaviour, IEncounterPlayerControl
 {
     [SerializeField] private float forwardSpeed = 2f;
     [SerializeField] private float sprintSpeed = 8f;
@@ -39,6 +40,8 @@ public class CombatMovementController : MonoBehaviour
     private bool hasCurrentSurface;
     private float lastSevereContactTime = float.NegativeInfinity;
     private readonly RaycastHit[] groundProbeHits = new RaycastHit[8];
+    private bool lookInputEnabled = true;
+    private bool movementInputEnabled = true;
 
     private int animIDSpeed;
     private int animIDGrounded;
@@ -77,10 +80,10 @@ public class CombatMovementController : MonoBehaviour
 
     private void Update()
     {
-        Vector2 moveInput = input.move;
+        Vector2 moveInput = movementInputEnabled ? input.move : Vector2.zero;
 
-        HandleAboutFace(moveInput);
-        HandleRotation();
+        if (movementInputEnabled) HandleAboutFace(moveInput);
+        if (lookInputEnabled) HandleRotation();
         HandleMovement(moveInput);
         UpdateAnimator(moveInput);
     }
@@ -163,7 +166,7 @@ public class CombatMovementController : MonoBehaviour
             verticalVelocity = -2f;
         }
 
-        if (input.jump && SteepSlopeRules.CanInitiateJump(
+        if (movementInputEnabled && input.jump && SteepSlopeRules.CanInitiateJump(
                 controller.isGrounded,
                 hasCurrentSurface,
                 currentSurfaceNormal,
@@ -192,6 +195,34 @@ public class CombatMovementController : MonoBehaviour
             Vector3.up * verticalVelocity;
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void BeginCinematicControl()
+    {
+        movementInputEnabled = false;
+        lookInputEnabled = false;
+        input.jump = false;
+    }
+
+    public void EndCinematicControl(Transform gameplayCamera)
+    {
+        if (gameplayCamera != null && cameraPitchTransform != null)
+        {
+            Quaternion cinematicWorldRotation = gameplayCamera.rotation;
+            transform.rotation = WolfEncounterCinematic.FlatYawRotation(cinematicWorldRotation, transform.rotation);
+            gameplayCamera.rotation = cinematicWorldRotation;
+
+            float pitch = Mathf.DeltaAngle(0f, cameraPitchTransform.localEulerAngles.x);
+            cameraPitch = ClampPitch(pitch, minimumPitch, maximumPitch);
+            cameraLocalYaw = 0f;
+            cameraPitchTransform.localRotation = Quaternion.Euler(cameraPitch, cameraLocalYaw, 0f);
+        }
+
+        input.look = Vector2.zero;
+        input.move = Vector2.zero;
+        input.jump = false;
+        lookInputEnabled = true;
+        movementInputEnabled = true;
     }
 
     private void ProbeSurface()

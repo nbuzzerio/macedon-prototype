@@ -54,6 +54,12 @@ namespace Macedon.Encounters
             playing = shakeTarget != null && activeDuration > 0f && activeAmplitude > 0f;
         }
 
+        public void Stop()
+        {
+            RemoveAppliedOffset();
+            playing = false;
+        }
+
         private void LateUpdate()
         {
             RemoveAppliedOffset();
@@ -66,8 +72,7 @@ namespace Macedon.Encounters
 
         private void OnDisable()
         {
-            RemoveAppliedOffset();
-            playing = false;
+            Stop();
         }
 
         private void RemoveAppliedOffset()

@@ -7,6 +7,8 @@ namespace Macedon.Encounters
     {
         [SerializeField] private bool beginOnEnable = false;
         [SerializeField] private EncounterBoundary boundary = null;
+        [Tooltip("Disable when a completion cinematic will call ReleaseBoundary at the visual route-opening beat.")]
+        [SerializeField] private bool releaseBoundaryOnCompletion = true;
         [SerializeField] private UnityEvent onEncounterBegan = new();
         [SerializeField] private UnityEvent onEncounterCompleted = new();
 
@@ -39,12 +41,17 @@ namespace Macedon.Encounters
         public void CompleteEncounter()
         {
             if (!state.Complete()) return;
-            if (boundary != null) boundary.SetEncounterActive(false);
+            if (releaseBoundaryOnCompletion) ReleaseBoundary();
             onEncounterCompleted.Invoke();
             EncounterCompleted?.Invoke();
         }
 
         // Wire Health.onDeath to this method. Kept semantic so a future authority layer can own confirmation.
         public void HandleWolfDeath() => CompleteEncounter();
+
+        public void ReleaseBoundary()
+        {
+            if (boundary != null) boundary.SetEncounterActive(false);
+        }
     }
 }
