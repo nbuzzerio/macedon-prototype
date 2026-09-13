@@ -1,16 +1,29 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Macedon.Encounters;
+using Macedon.Villagers;
 
 public class NPCDialogue : MonoBehaviour
 {
     [SerializeField] private WolfQuest wolfQuest;
+    [Header("Recruitable Villager (optional)")]
+    [SerializeField] private VillagerProfile villagerProfile;
+    [SerializeField] private WolfEncounterController wolfEncounter;
+    [SerializeField] private Transform home;
+    [Header("Shared Dialogue UI")]
     [SerializeField] private TextMeshProUGUI dialogueText;
     public GameObject talkPromptUI;
     public GameObject dialogueUI;
 
     private bool playerInRange;
     private bool dialogueOpen;
+    private int lastAmbientDialogueIndex = -1;
+    private int lastRecruitReadyDialogueIndex = -1;
+
+    public VillagerProfile Profile => villagerProfile;
+    public Transform Home => home;
+    public VillagerDialogueState CurrentVillagerState => VillagerDialogueLogic.StateForWolfCompletion(IsWolfCompleted());
 
     private void Update()
     {
@@ -32,10 +45,18 @@ public class NPCDialogue : MonoBehaviour
 
     private void UpdateDialogue()
     {
-        if (wolfQuest == null || dialogueText == null)
+        if (dialogueText == null)
         {
             return;
         }
+
+        if (villagerProfile != null)
+        {
+            UpdateProfileDialogue();
+            return;
+        }
+
+        if (wolfQuest == null) return;
 
         switch (wolfQuest.CurrentStage)
         {
@@ -63,6 +84,31 @@ public class NPCDialogue : MonoBehaviour
                     "The raiders are still holding the old fort nearby. The village needs help.";
                 break;
         }
+    }
+
+    private void UpdateProfileDialogue()
+    {
+        VillagerDialogueState state = CurrentVillagerState;
+        string[] lines = villagerProfile.DialogueFor(state);
+        int previous = state == VillagerDialogueState.Ambient
+            ? lastAmbientDialogueIndex
+            : lastRecruitReadyDialogueIndex;
+        int next = VillagerDialogueLogic.NextDialogueIndex(lines == null ? 0 : lines.Length, previous);
+        if (next < 0)
+        {
+            dialogueText.text = string.Empty;
+            return;
+        }
+
+        dialogueText.text = lines[next];
+        if (state == VillagerDialogueState.Ambient) lastAmbientDialogueIndex = next;
+        else lastRecruitReadyDialogueIndex = next;
+    }
+
+    private bool IsWolfCompleted()
+    {
+        if (wolfEncounter != null) return wolfEncounter.IsCompleted;
+        return wolfQuest != null && wolfQuest.CurrentStage >= WolfQuest.QuestStage.WolfDefeated;
     }
 
     private void OnTriggerEnter(Collider other)

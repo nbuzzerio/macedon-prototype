@@ -48,6 +48,13 @@ MACEDON now has a small playable vertical slice with a beginning, middle, and en
 - Scene-specific crater blockers, tree GameObjects/pivots, camera target, and completion-event references still require manual Unity placement and tuning
 - Wolf-death cinematic orchestration is implemented in code with Inspector-authored Wolf/tree focus points; final camera references, event rewiring, stagger tuning, and Play Mode framing remain manual
 
+## Villagers / Recruitment
+
+- Shared `NPCDialogue` interaction now supports optional data-driven villager profiles while preserving the original Wolf quest-giver behavior.
+- Three prototype profiles provide distinct ambient and post-Wolf RecruitReady dialogue pools.
+- Recruitable villagers reference the encounter completion state rather than Wolf health and expose an authored Home Transform for later movement behavior.
+- This slice stops at Ambient → RecruitReady. Recruiting, following, and multiple simultaneous followers are the next pass.
+
 ## UI
 
 - Player health text

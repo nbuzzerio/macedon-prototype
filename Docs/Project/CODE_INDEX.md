@@ -36,7 +36,10 @@ Editor-only `Tools > MACEDON > Character Visual Variants` workflow for the curre
 ## Dialogue / Quest
 
 ### NPCDialogue.cs
-Trigger-based villager interaction and dialogue UI toggling.
+Trigger-based villager interaction and dialogue UI toggling. With no profile it preserves the original Wolf quest-giver flow; with a `VillagerProfile` it selects deterministic cycling dialogue from Ambient or RecruitReady pools based on Wolf encounter completion and exposes a scene-authored Home anchor.
+
+### VillagerProfile.cs / VillagerDialogueLogic.cs
+Reusable recruitment-slice data and deterministic selection logic. Three profile assets author distinct villager lines without bespoke scripts. Current states are only Ambient and RecruitReady; no recruitment or movement behavior exists yet.
 
 ### WolfQuest.cs
 Starts the wolf quest and activates the wolf encounter.
