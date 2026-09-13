@@ -56,6 +56,8 @@ MACEDON now has a small playable vertical slice with a beginning, middle, and en
 - RecruitReady interaction now recruits each villager independently and idempotently into a small shared party registry.
 - Up to three villagers follow simultaneously in stable left-rear, right-rear, and far-rear slots using throttled, sampled NavMesh destinations.
 - Following dialogue remains profile-authored. Route warnings, abandonment, return-home movement, re-recruitment, and ally combat are not implemented.
+- A reusable NPC locomotion driver maps each follower's NavMeshAgent velocity into the existing Starter Assets idle/walk/run Animator parameters; the agent remains authoritative and root motion stays disabled.
+- Follower jump/traversal choreography and combat animation driving remain pending.
 
 ## UI
 

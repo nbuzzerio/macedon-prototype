@@ -1,4 +1,5 @@
 using Macedon.Villagers;
+using Macedon.Characters;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -130,6 +131,33 @@ namespace Macedon.Villagers.Tests
         {
             property.arraySize = 1;
             property.GetArrayElementAtIndex(0).stringValue = value;
+        }
+
+        [Test]
+        public void NpcLocomotion_ZeroAndTinyVelocityMapToIdle()
+        {
+            NpcLocomotionValues zero = NpcLocomotionAnimationLogic.MapSpeed(Vector3.zero, 4f, 6f, 0.05f);
+            NpcLocomotionValues tiny = NpcLocomotionAnimationLogic.MapSpeed(new Vector3(0.03f, 5f, 0f), 4f, 6f, 0.05f);
+            Assert.That(zero.BlendSpeed, Is.Zero);
+            Assert.That(zero.MotionSpeed, Is.Zero);
+            Assert.That(tiny.BlendSpeed, Is.Zero);
+            Assert.That(tiny.MotionSpeed, Is.Zero);
+        }
+
+        [Test]
+        public void NpcLocomotion_MovingVelocityMapsToBlendAndNormalizedMotion()
+        {
+            NpcLocomotionValues values = NpcLocomotionAnimationLogic.MapSpeed(new Vector3(3f, 20f, 0f), 4f, 6f, 0.05f);
+            Assert.That(values.BlendSpeed, Is.EqualTo(3f).Within(0.0001f));
+            Assert.That(values.MotionSpeed, Is.EqualTo(0.75f).Within(0.0001f));
+        }
+
+        [Test]
+        public void NpcLocomotion_ClampsBlendAndNormalizedMotionSpeed()
+        {
+            NpcLocomotionValues values = NpcLocomotionAnimationLogic.MapSpeed(new Vector3(10f, 0f, 0f), 4f, 6f, 0.05f);
+            Assert.That(values.BlendSpeed, Is.EqualTo(6f));
+            Assert.That(values.MotionSpeed, Is.EqualTo(1f));
         }
     }
 }
