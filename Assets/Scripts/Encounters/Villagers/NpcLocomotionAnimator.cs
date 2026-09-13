@@ -29,14 +29,27 @@ namespace Macedon.Characters
 
         private void Reset()
         {
-            agent = GetComponent<NavMeshAgent>();
-            TryResolveUniqueChildAnimator();
+            ResolveLocalReferences();
+        }
+
+        private void OnValidate()
+        {
+            ResolveLocalReferences();
         }
 
         private void Awake()
         {
-            if (agent == null) agent = GetComponent<NavMeshAgent>();
-            if (animator == null) TryResolveUniqueChildAnimator();
+            Animator previouslyAssignedAnimator = animator;
+            ResolveLocalReferences();
+
+            if (previouslyAssignedAnimator != null && previouslyAssignedAnimator != animator &&
+                !NpcLocomotionAnimationLogic.IsInHierarchy(transform, previouslyAssignedAnimator.transform))
+            {
+                Debug.LogWarning(
+                    $"NPC locomotion animator on '{name}' rejected Animator '{previouslyAssignedAnimator.name}' " +
+                    "because it belongs to another hierarchy. A local Animator was used when unambiguous.",
+                    this);
+            }
 
             if (animator != null)
             {
@@ -68,8 +81,14 @@ namespace Macedon.Characters
             animator.SetBool(FreeFallId, false);
         }
 
-        private void TryResolveUniqueChildAnimator()
+        private void ResolveLocalReferences()
         {
+            // The agent must always belong to this movement root; copied Inspector references are not trusted.
+            agent = GetComponent<NavMeshAgent>();
+
+            if (animator != null && NpcLocomotionAnimationLogic.IsInHierarchy(transform, animator.transform)) return;
+
+            animator = null;
             Animator[] candidates = GetComponentsInChildren<Animator>(true);
             if (candidates.Length == 1) animator = candidates[0];
         }

@@ -16,6 +16,12 @@ namespace Macedon.Characters
 
     public static class NpcLocomotionAnimationLogic
     {
+        public static bool IsInHierarchy(Transform hierarchyRoot, Transform candidate)
+        {
+            if (hierarchyRoot == null || candidate == null) return false;
+            return candidate == hierarchyRoot || candidate.IsChildOf(hierarchyRoot);
+        }
+
         public static NpcLocomotionValues MapSpeed(
             Vector3 worldVelocity,
             float agentMaximumSpeed,

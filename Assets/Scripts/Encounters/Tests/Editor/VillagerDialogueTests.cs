@@ -159,5 +159,27 @@ namespace Macedon.Villagers.Tests
             Assert.That(values.BlendSpeed, Is.EqualTo(6f));
             Assert.That(values.MotionSpeed, Is.EqualTo(1f));
         }
+
+        [Test]
+        public void NpcLocomotionHierarchyValidation_AcceptsOnlySelfOrDescendants()
+        {
+            var root = new GameObject("VillagerRoot");
+            var child = new GameObject("Visual");
+            var unrelated = new GameObject("OtherVillagerVisual");
+            child.transform.SetParent(root.transform);
+
+            try
+            {
+                Assert.That(NpcLocomotionAnimationLogic.IsInHierarchy(root.transform, root.transform), Is.True);
+                Assert.That(NpcLocomotionAnimationLogic.IsInHierarchy(root.transform, child.transform), Is.True);
+                Assert.That(NpcLocomotionAnimationLogic.IsInHierarchy(root.transform, unrelated.transform), Is.False);
+                Assert.That(NpcLocomotionAnimationLogic.IsInHierarchy(null, child.transform), Is.False);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+                Object.DestroyImmediate(unrelated);
+            }
+        }
     }
 }

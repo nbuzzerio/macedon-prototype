@@ -48,7 +48,10 @@ Recruitment state is separate from dialogue/world state. The small party coordin
 NavMeshAgent-based following for recruited villagers. Distinct local formation offsets rotate with Player yaw; destination updates are throttled, sampled onto compatible NavMesh, and never issued while an agent is off-mesh. No combat, return-home, or route-deviation behavior is included.
 
 ### NpcLocomotionAnimator.cs / NpcLocomotionAnimationLogic.cs
-Reusable humanoid NPC presentation driver. It maps horizontal NavMeshAgent velocity to the existing `Speed` and `MotionSpeed` parameters, maintains grounded locomotion without faking jumps, disables root motion, and can assign the existing Starter Assets controller when a child visual Animator has none. Jump/traversal and attack triggering remain future gameplay responsibilities.
+Reusable humanoid NPC presentation driver. It maps horizontal NavMeshAgent velocity to the existing `Speed` and `MotionSpeed` parameters, maintains grounded locomotion without faking jumps, disables root motion, and can assign the existing Starter Assets controller when a child visual Animator has none. It always binds the NavMeshAgent on its own root and rejects Animator references outside that root's hierarchy, auto-selecting the local Animator when exactly one exists. Jump/traversal and attack triggering remain future gameplay responsibilities.
+
+### NpcAnimationEventReceiver.cs
+No-op NPC-side receiver for the `OnFootstep(AnimationEvent)` events embedded in the shared Starter Assets walk/run clips. It belongs beside the visual Animator, prevents missing-receiver errors, and leaves a focused future hook for NPC footstep effects without adding Player-specific components.
 
 ### WolfQuest.cs
 Starts the wolf quest and activates the wolf encounter.

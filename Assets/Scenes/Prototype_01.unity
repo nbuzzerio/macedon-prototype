@@ -1393,7 +1393,7 @@ Transform:
   m_GameObject: {fileID: 116819009}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -3.88, y: 4.15, z: 80.21}
+  m_LocalPosition: {x: -9.74, y: 4.15, z: 73.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2875,6 +2875,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 267432038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &204911472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9110454066448613336, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
+  m_PrefabInstance: {fileID: 462892889}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &205576050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2987,7 +2992,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9110454066448613336, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1735679023}
   m_SourcePrefab: {fileID: 100100000, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
 --- !u!4 &224829033 stripped
 Transform:
@@ -4440,7 +4448,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9110454066448613336, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 462892892}
   m_SourcePrefab: {fileID: 100100000, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
 --- !u!4 &462892890 stripped
 Transform:
@@ -4452,6 +4463,18 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 2577512319414386456, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
   m_PrefabInstance: {fileID: 462892889}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &462892892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204911472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42f9f9179244ceda929d495851c771a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Characters.NpcAnimationEventReceiver
 --- !u!1001 &474161410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13878,11 +13901,28 @@ MonoBehaviour:
   controllerMaximumBlendSpeed: 6
   idleVelocityThreshold: 0.05
   speedDampTime: 0.12
+--- !u!1 &1735679021 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9110454066448613336, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
+  m_PrefabInstance: {fileID: 224829032}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1735679022 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2577512319414386456, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
   m_PrefabInstance: {fileID: 224829032}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1735679023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735679021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42f9f9179244ceda929d495851c771a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Characters.NpcAnimationEventReceiver
 --- !u!1001 &1737481531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13949,6 +13989,11 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3030171986968133739, guid: 0efadc8c714444d49a10b02f99dff28d, type: 3}
   m_PrefabInstance: {fileID: 1737481531}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1743227978 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9110454066448613336, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
+  m_PrefabInstance: {fileID: 1756971139}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1744382122
 PrefabInstance:
@@ -14076,7 +14121,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9110454066448613336, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1756971142}
   m_SourcePrefab: {fileID: 100100000, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
 --- !u!4 &1756971140 stripped
 Transform:
@@ -14088,6 +14136,18 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 2577512319414386456, guid: a51a641d0ff09e5478389ff8238ae10e, type: 3}
   m_PrefabInstance: {fileID: 1756971139}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1756971142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743227978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42f9f9179244ceda929d495851c771a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Macedon.Encounters::Macedon.Characters.NpcAnimationEventReceiver
 --- !u!1001 &1759112863
 PrefabInstance:
   m_ObjectHideFlags: 0
