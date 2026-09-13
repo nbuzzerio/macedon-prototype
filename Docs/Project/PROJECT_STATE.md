@@ -44,6 +44,8 @@ MACEDON now has a small playable vertical slice with a beginning, middle, and en
 - Wolf resumes roaming after returning home
 - Boss health UI appears on aggro
 - Wolf defeat triggers victory screen
+- Reusable Wolf encounter state, temporary-boundary control, local camera shake, selected-tree fall, and exit reveal components are implemented in code
+- Scene-specific crater blockers, tree GameObjects/pivots, camera target, and completion-event references still require manual Unity placement and tuning
 
 ## UI
 

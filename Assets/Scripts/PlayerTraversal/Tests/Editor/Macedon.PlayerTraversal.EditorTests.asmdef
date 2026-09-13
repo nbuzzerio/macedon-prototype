@@ -1,0 +1,13 @@
+{
+    "name": "Macedon.PlayerTraversal.EditorTests",
+    "rootNamespace": "Macedon.PlayerTraversal.Tests",
+    "references": [
+        "Macedon.PlayerTraversal"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

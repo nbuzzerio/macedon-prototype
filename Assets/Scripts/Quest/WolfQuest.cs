@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Events;
+using Macedon.Encounters;
 
 public class WolfQuest : MonoBehaviour
 {
@@ -10,7 +12,9 @@ public class WolfQuest : MonoBehaviour
         RaiderThreatIntroduced
     }
 
-    [SerializeField] private GameObject wolfEnemy;
+    [SerializeField] private GameObject wolfEnemy = null;
+    [SerializeField] private WolfEncounterController wolfEncounter = null;
+    [SerializeField] private UnityEvent onWolfEncounterCompleted = new();
 
     private QuestStage currentStage = QuestStage.NotStarted;
 
@@ -25,6 +29,10 @@ public class WolfQuest : MonoBehaviour
 
         currentStage = QuestStage.WolfActive;
         wolfEnemy.SetActive(true);
+        if (wolfEncounter != null)
+        {
+            wolfEncounter.BeginEncounter();
+        }
     }
 
     public void CompleteWolfEncounter()
@@ -35,6 +43,11 @@ public class WolfQuest : MonoBehaviour
         }
 
         currentStage = QuestStage.WolfDefeated;
+        if (wolfEncounter != null)
+        {
+            wolfEncounter.CompleteEncounter();
+        }
+        onWolfEncounterCompleted.Invoke();
     }
 
     public void IntroduceRaiderThreat()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using StarterAssets;
+using Macedon.PlayerTraversal;
 
 [RequireComponent(typeof(CharacterController))]
 public class CombatMovementController : MonoBehaviour
@@ -17,6 +18,13 @@ public class CombatMovementController : MonoBehaviour
     [SerializeField] private Transform cameraPitchTransform;
     [SerializeField] private float doubleTapWindow = 0.3f;
 
+    [Header("Steep Slope Traversal")]
+    [SerializeField, Range(1f, 89f)] private float maxTraversableSlope = 50f;
+    [SerializeField, Min(0.01f)] private float groundProbeDistance = 0.25f;
+    [SerializeField, Min(0f)] private float steepSlopeSlideSpeed = 1.5f;
+    [SerializeField, Min(0f)] private float severeContactMemory = 0.15f;
+    [SerializeField] private LayerMask groundLayers = ~0;
+
     private CharacterController controller;
     private StarterAssetsInputs input;
     private Animator animator;
@@ -26,6 +34,11 @@ public class CombatMovementController : MonoBehaviour
     private float cameraLocalYaw;
     private float lastBackTapTime = -1f;
     private bool wasPressingBack;
+    private Vector3 currentSurfaceNormal = Vector3.up;
+    private Vector3 recentSevereSurfaceNormal = Vector3.up;
+    private bool hasCurrentSurface;
+    private float lastSevereContactTime = float.NegativeInfinity;
+    private readonly RaycastHit[] groundProbeHits = new RaycastHit[8];
 
     private int animIDSpeed;
     private int animIDGrounded;
@@ -38,6 +51,7 @@ public class CombatMovementController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         input = GetComponent<StarterAssetsInputs>();
         animator = GetComponent<Animator>();
+        controller.slopeLimit = maxTraversableSlope;
 
         if (cameraPitchTransform == null)
         {
@@ -123,6 +137,8 @@ public class CombatMovementController : MonoBehaviour
 
     private void HandleMovement(Vector2 moveInput)
     {
+        ProbeSurface();
+
         Vector3 moveDirection =
             transform.forward * moveInput.y +
             transform.right * moveInput.x;
@@ -134,12 +150,24 @@ public class CombatMovementController : MonoBehaviour
 
         float speed = GetMoveSpeed(moveInput);
 
+        bool hasSevereSurface = TryGetSevereSurface(out Vector3 severeNormal);
+        if (hasSevereSurface)
+        {
+            moveDirection = SteepSlopeRules.SuppressUphillMovement(moveDirection, severeNormal);
+            moveDirection += SteepSlopeRules.DownhillDirection(severeNormal) * steepSlopeSlideSpeed / Mathf.Max(speed, 0.01f);
+            if (verticalVelocity > 0f) verticalVelocity = 0f;
+        }
+
         if (controller.isGrounded && verticalVelocity < 0f)
         {
             verticalVelocity = -2f;
         }
 
-        if (input.jump && controller.isGrounded)
+        if (input.jump && SteepSlopeRules.CanInitiateJump(
+                controller.isGrounded,
+                hasCurrentSurface,
+                currentSurfaceNormal,
+                maxTraversableSlope) && !hasSevereSurface)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
@@ -151,6 +179,12 @@ public class CombatMovementController : MonoBehaviour
             input.jump = false;
         }
 
+        if (input.jump && controller.isGrounded)
+        {
+            // Consume denied grounded jumps so holding/pressing into a severe face cannot queue a jump.
+            input.jump = false;
+        }
+
         verticalVelocity += gravity * Time.deltaTime;
 
         Vector3 velocity =
@@ -158,6 +192,59 @@ public class CombatMovementController : MonoBehaviour
             Vector3.up * verticalVelocity;
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void ProbeSurface()
+    {
+        float radius = Mathf.Max(0.01f, controller.radius * 0.9f);
+        Vector3 center = transform.TransformPoint(controller.center);
+        float halfHeight = Mathf.Max(controller.height * 0.5f, radius);
+        Vector3 origin = center + Vector3.down * (halfHeight - radius);
+        int hitCount = Physics.SphereCastNonAlloc(
+            origin,
+            radius,
+            Vector3.down,
+            groundProbeHits,
+            groundProbeDistance + controller.skinWidth,
+            groundLayers,
+            QueryTriggerInteraction.Ignore);
+        hasCurrentSurface = false;
+        float nearestDistance = float.PositiveInfinity;
+        currentSurfaceNormal = Vector3.up;
+        for (int index = 0; index < hitCount; index++)
+        {
+            RaycastHit hit = groundProbeHits[index];
+            if (hit.collider == controller || hit.distance >= nearestDistance) continue;
+            hasCurrentSurface = true;
+            nearestDistance = hit.distance;
+            currentSurfaceNormal = hit.normal;
+        }
+    }
+
+    private bool TryGetSevereSurface(out Vector3 surfaceNormal)
+    {
+        if (hasCurrentSurface && !SteepSlopeRules.IsTraversable(currentSurfaceNormal, maxTraversableSlope))
+        {
+            surfaceNormal = currentSurfaceNormal;
+            return true;
+        }
+
+        if (Time.time - lastSevereContactTime <= severeContactMemory)
+        {
+            surfaceNormal = recentSevereSurfaceNormal;
+            return true;
+        }
+
+        surfaceNormal = Vector3.up;
+        return false;
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (SteepSlopeRules.IsTraversable(hit.normal, maxTraversableSlope)) return;
+        recentSevereSurfaceNormal = hit.normal;
+        lastSevereContactTime = Time.time;
+        if (verticalVelocity > 0f) verticalVelocity = 0f;
     }
 
     private float GetMoveSpeed(Vector2 moveInput)

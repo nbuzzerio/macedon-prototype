@@ -1,0 +1,13 @@
+{
+    "name": "Macedon.Encounters.EditorTests",
+    "rootNamespace": "Macedon.Encounters.Tests",
+    "references": [
+        "Macedon.Encounters"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

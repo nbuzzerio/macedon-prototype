@@ -23,7 +23,10 @@ Shared helper for health text color thresholds.
 ## Player
 
 ### CombatMovementController.cs
-Custom player movement controller. Handles mouse turning, forward movement, strafing, diagonal movement, backpedal, sprint, jump, and animator parameters.
+Custom player movement controller. Handles mouse turning, forward movement, strafing, diagonal movement, backpedal, sprint, jump, animator parameters, and the global steep-slope traversal rule.
+
+### SteepSlopeRules.cs
+Deterministic player-traversal math for slope classification, jump authorization, uphill-input suppression, and downhill direction. `CombatMovementController` applies it from a CharacterController-sized ground probe and recent collision normals.
 
 ## Dialogue / Quest
 
@@ -32,6 +35,20 @@ Trigger-based villager interaction and dialogue UI toggling.
 
 ### WolfQuest.cs
 Starts the wolf quest and activates the wolf encounter.
+
+## Encounters
+
+### WolfEncounterState.cs / WolfEncounterController.cs
+Own the idempotent `NotStarted → Active → Completed` Wolf encounter lifecycle. The controller activates temporary boundary collision and exposes Unity/C# events so quest logic and presentation can respond without `Health` knowing about them.
+
+### EncounterStartTrigger.cs / EncounterBoundary.cs
+Optionally commits a tagged player on volume entry and enables only the explicitly assigned encounter blockers while the fight is active.
+
+### LocalCameraShake.cs
+Reusable local positional camera shake with a decaying envelope. It removes its previous offset before applying the next one and restores the target when finished or disabled.
+
+### EncounterTreeFallResponder.cs / EncounterExitResponder.cs
+Inspector-configured, one-shot completion presentation: stagger selected scene-tree rotations and enable/disable route objects or collision. These do not alter Terrain-painted tree data.
 
 ## UI / Game
 
