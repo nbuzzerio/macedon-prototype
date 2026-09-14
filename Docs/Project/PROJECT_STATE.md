@@ -55,9 +55,10 @@ MACEDON now has a small playable vertical slice with a beginning, middle, and en
 - Recruitable villagers reference the encounter completion state rather than Wolf health and expose an authored Home Transform for later movement behavior.
 - RecruitReady interaction now recruits each villager independently and idempotently into a small shared party registry.
 - Up to three villagers follow simultaneously in stable left-rear, right-rear, and far-rear slots using throttled, sampled NavMesh destinations.
-- Following dialogue remains profile-authored. Route warnings, abandonment, return-home movement, re-recruitment, and ally combat are not implemented.
+- Following and rejoin dialogue remain profile-authored. A separate route-deviation component supports queued warning lines, independent abandonment, NavMesh return to the authored Home, and re-recruitment.
 - A reusable NPC locomotion driver maps each follower's NavMeshAgent velocity into the existing Starter Assets idle/walk/run Animator parameters; the agent remains authoritative and root motion stays disabled.
-- Follower jump/traversal choreography and combat animation driving remain pending.
+- A reusable authored traversal coordinator can suspend formation ownership and move followers one-by-one over explicit bidirectional jump points with deterministic arcs and safe NavMesh restoration. The river route and triggers require manual scene wiring and QA.
+- Authored raid-route corridor volumes are implemented in code but require generous manual placement from village through river/Wolf space to the fort. Ally combat remains pending.
 
 ## UI
 

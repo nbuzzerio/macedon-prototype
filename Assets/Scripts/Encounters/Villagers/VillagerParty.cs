@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Macedon.Villagers
 {
@@ -25,6 +27,9 @@ namespace Macedon.Villagers
         }
 
         public bool Unregister(VillagerFollower follower) => registry.Unregister(follower);
+
+        public IReadOnlyList<VillagerFollower> FollowersInSlotOrder() =>
+            registry.Entries.OrderBy(entry => entry.Value).Select(entry => entry.Key).ToArray();
 
         public Vector3 TargetForSlot(int slot) =>
             VillagerFormationLogic.WorldTarget(player.position, player.eulerAngles.y, slot);

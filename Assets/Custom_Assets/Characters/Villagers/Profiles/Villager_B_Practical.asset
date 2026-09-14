@@ -21,3 +21,7 @@ MonoBehaviour:
   - You handled the wolf. Maybe you've got a chance against those raiders after all. I'm with you.
   followingDialogue:
   - Lead the way.
+  warning1Dialogue: This isn't the road to the fort.
+  warning2Dialogue: You do know where we're going, right?
+  abandonDialogue: I'm heading back. Find me when you've got your bearings.
+  rejoinDialogue: I'll come. Try following the road this time.

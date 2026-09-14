@@ -3,7 +3,9 @@ namespace Macedon.Villagers
     public enum VillagerRecruitmentStatus
     {
         Unrecruited,
-        Following
+        Following,
+        ReturningHome,
+        RejoinReady
     }
 
     public sealed class VillagerRecruitmentState
@@ -12,7 +14,7 @@ namespace Macedon.Villagers
 
         public bool TryRecruit(bool wolfCompleted)
         {
-            if (!wolfCompleted || Status == VillagerRecruitmentStatus.Following) return false;
+            if (!wolfCompleted || (Status != VillagerRecruitmentStatus.Unrecruited && Status != VillagerRecruitmentStatus.RejoinReady)) return false;
             Status = VillagerRecruitmentStatus.Following;
             return true;
         }
@@ -20,7 +22,14 @@ namespace Macedon.Villagers
         public bool LeaveParty()
         {
             if (Status != VillagerRecruitmentStatus.Following) return false;
-            Status = VillagerRecruitmentStatus.Unrecruited;
+            Status = VillagerRecruitmentStatus.ReturningHome;
+            return true;
+        }
+
+        public bool ArriveHome()
+        {
+            if (Status != VillagerRecruitmentStatus.ReturningHome) return false;
+            Status = VillagerRecruitmentStatus.RejoinReady;
             return true;
         }
     }

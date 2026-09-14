@@ -25,6 +25,7 @@ public class NPCDialogue : MonoBehaviour
 
     public VillagerProfile Profile => villagerProfile;
     public Transform Home => home;
+    public TextMeshProUGUI DialogueText => dialogueText;
     public VillagerDialogueState CurrentVillagerState =>
         VillagerDialogueLogic.StateFor(IsWolfCompleted(), follower != null && follower.IsFollowing);
 
@@ -96,7 +97,14 @@ public class NPCDialogue : MonoBehaviour
 
     private void UpdateProfileDialogue()
     {
+        bool rejoining = follower != null && follower.Status == VillagerRecruitmentStatus.RejoinReady;
         VillagerDialogueState state = CurrentVillagerState;
+        if (rejoining)
+        {
+            dialogueText.text = villagerProfile.RejoinDialogue;
+            follower.TryRecruit(IsWolfCompleted());
+            return;
+        }
         string[] lines = villagerProfile.DialogueFor(state);
         int previous = state == VillagerDialogueState.Ambient
             ? lastAmbientDialogueIndex

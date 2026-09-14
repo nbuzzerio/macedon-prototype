@@ -3,6 +3,8 @@ using UnityEngine.AI;
 
 namespace Macedon.Villagers
 {
+    public enum VillagerMovementMode { FormationFollowing, Traversal, ReturningHome }
+
     [RequireComponent(typeof(NavMeshAgent))]
     public sealed class VillagerFollower : MonoBehaviour
     {
@@ -15,6 +17,7 @@ namespace Macedon.Villagers
         [Min(0.1f)] [SerializeField] private float targetNavMeshSearchRadius = 1.5f;
 
         private readonly VillagerRecruitmentState recruitment = new();
+        private readonly VillagerMovementOwnership movementOwnership = new();
         private NavMeshAgent agent;
         private int slot = -1;
         private float nextRepathTime;
@@ -24,6 +27,8 @@ namespace Macedon.Villagers
         public VillagerRecruitmentStatus Status => recruitment.Status;
         public bool IsFollowing => Status == VillagerRecruitmentStatus.Following;
         public int Slot => slot;
+        public VillagerMovementMode MovementMode => movementOwnership.Mode;
+        public NavMeshAgent Agent => agent;
 
         private void Awake() => agent = GetComponent<NavMeshAgent>();
 
@@ -40,7 +45,7 @@ namespace Macedon.Villagers
 
         private void Update()
         {
-            if (!IsFollowing || Time.time < nextRepathTime) return;
+            if (!IsFollowing || MovementMode != VillagerMovementMode.FormationFollowing || Time.time < nextRepathTime) return;
             nextRepathTime = Time.time + repathInterval;
 
             if (party == null || party.Player == null || slot < 0) return;
@@ -94,6 +99,55 @@ namespace Macedon.Villagers
             StopAgent();
             return true;
         }
+
+        public bool TryAcquireTraversal()
+        {
+            if (!IsFollowing || MovementMode != VillagerMovementMode.FormationFollowing) return false;
+            if (!movementOwnership.TryBeginTraversal()) return false;
+            StopAgent();
+            return true;
+        }
+
+        public bool TryReleaseTraversal()
+        {
+            bool movementReady = agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh;
+            if (!movementOwnership.TryResumeFormation(movementReady)) return false;
+            nextRepathTime = 0f;
+            return true;
+        }
+
+        public bool BeginReturningHome()
+        {
+            if (!LeaveParty()) return false;
+            movementOwnership.BeginReturningHome();
+            return true;
+        }
+
+        public bool MarkArrivedHome()
+        {
+            if (!recruitment.ArriveHome()) return false;
+            movementOwnership.FinishReturningHome();
+            StopAgent();
+            return true;
+        }
+
+        public bool TrySetAuthoredDestination(Vector3 target, float sampleRadius)
+        {
+            return TrySetAuthoredDestination(target, sampleRadius, out _);
+        }
+
+        public bool TrySetAuthoredDestination(Vector3 target, float sampleRadius, out Vector3 sampledDestination)
+        {
+            sampledDestination = target;
+            if (!EnsureOnNavMesh()) return false;
+            var filter = new NavMeshQueryFilter { agentTypeID = agent.agentTypeID, areaMask = agent.areaMask };
+            if (!NavMesh.SamplePosition(target, out NavMeshHit hit, sampleRadius, filter)) return false;
+            sampledDestination = hit.position;
+            agent.isStopped = false;
+            return agent.SetDestination(hit.position);
+        }
+
+        public void StopAuthoredMovement() => StopAgent();
 
         private bool RegisterWithParty()
         {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System;
 
 namespace Macedon.Characters
 {
@@ -26,6 +27,8 @@ namespace Macedon.Characters
         [Min(0f)] [SerializeField] private float speedDampTime = 0.12f;
 
         private bool configurationWarningLogged;
+        private bool traversalOwnsAnimation;
+        public event Action LandingAnimationEvent;
 
         private void Reset()
         {
@@ -67,6 +70,8 @@ namespace Macedon.Characters
         {
             if (agent == null || animator == null || animator.runtimeAnimatorController == null) return;
 
+            if (traversalOwnsAnimation) return;
+
             NpcLocomotionValues values = NpcLocomotionAnimationLogic.MapSpeed(
                 agent.velocity,
                 agent.speed,
@@ -80,6 +85,35 @@ namespace Macedon.Characters
             animator.SetBool(JumpId, false);
             animator.SetBool(FreeFallId, false);
         }
+
+        public void BeginJump()
+        {
+            if (animator == null) return;
+            traversalOwnsAnimation = true;
+            animator.SetFloat(SpeedId, 0f);
+            animator.SetFloat(MotionSpeedId, 0f);
+            animator.SetBool(GroundedId, false);
+            animator.SetBool(FreeFallId, false);
+            animator.SetBool(JumpId, true);
+        }
+
+        public void SetAirborne()
+        {
+            if (animator == null || !traversalOwnsAnimation) return;
+            animator.SetBool(JumpId, false);
+            animator.SetBool(FreeFallId, true);
+        }
+
+        public void CompleteLanding()
+        {
+            if (animator == null) return;
+            animator.SetBool(JumpId, false);
+            animator.SetBool(FreeFallId, false);
+            animator.SetBool(GroundedId, true);
+            traversalOwnsAnimation = false;
+        }
+
+        public void HandleLandingAnimationEvent() => LandingAnimationEvent?.Invoke();
 
         private void ResolveLocalReferences()
         {

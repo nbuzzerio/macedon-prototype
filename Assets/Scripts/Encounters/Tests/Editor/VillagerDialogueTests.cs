@@ -34,7 +34,10 @@ namespace Macedon.Villagers.Tests
             Assert.That(state.TryRecruit(true), Is.False);
             Assert.That(state.Status, Is.EqualTo(VillagerRecruitmentStatus.Following));
             Assert.That(state.LeaveParty(), Is.True);
-            Assert.That(state.Status, Is.EqualTo(VillagerRecruitmentStatus.Unrecruited));
+            Assert.That(state.Status, Is.EqualTo(VillagerRecruitmentStatus.ReturningHome));
+            Assert.That(state.ArriveHome(), Is.True);
+            Assert.That(state.Status, Is.EqualTo(VillagerRecruitmentStatus.RejoinReady));
+            Assert.That(state.TryRecruit(true), Is.True);
         }
 
         [Test]
@@ -180,6 +183,137 @@ namespace Macedon.Villagers.Tests
                 Object.DestroyImmediate(root);
                 Object.DestroyImmediate(unrelated);
             }
+        }
+
+        [Test]
+        public void AuthoredJumpInterpolation_HitsEndpointsAndRaisesArc()
+        {
+            Vector3 start = new Vector3(1f, 2f, 3f);
+            Vector3 end = new Vector3(5f, 2f, 7f);
+            Assert.That(AuthoredTraversalLogic.JumpPosition(start, end, 0f, 1f), Is.EqualTo(start));
+            Assert.That(AuthoredTraversalLogic.JumpPosition(start, end, 1f, 1f), Is.EqualTo(end));
+            Assert.That(AuthoredTraversalLogic.JumpPosition(start, end, 0.5f, 1f).y, Is.GreaterThan(2f));
+        }
+
+        [Test]
+        public void AuthoredEntryArrival_UsesSampledDestinationNotAuthoredPoint()
+        {
+            Vector3 authored = Vector3.zero;
+            Vector3 sampled = new Vector3(1f, 0f, 0f);
+            Vector3 follower = new Vector3(1.1f, 0f, 0f);
+
+            Assert.That(AuthoredTraversalLogic.HasArrived(follower, sampled, 0.45f), Is.True);
+            Assert.That(AuthoredTraversalLogic.HasArrived(follower, authored, 0.45f), Is.False);
+            Assert.That(AuthoredTraversalLogic.HasArrived(follower, sampled, -1f), Is.False);
+        }
+
+        [Test]
+        public void AuthoredTraversalPointOrder_ReversesByCrossingSide()
+        {
+            Assert.That(AuthoredTraversalLogic.PointOrder(4, TraversalSide.A), Is.EqualTo(new[] { 0, 1, 2, 3 }));
+            Assert.That(AuthoredTraversalLogic.PointOrder(4, TraversalSide.B), Is.EqualTo(new[] { 3, 2, 1, 0 }));
+        }
+
+        [Test]
+        public void MovementOwnership_TraversalReleasesOnlyWhenMovementIsReady()
+        {
+            var ownership = new VillagerMovementOwnership();
+            Assert.That(ownership.Mode, Is.EqualTo(VillagerMovementMode.FormationFollowing));
+            Assert.That(ownership.TryBeginTraversal(), Is.True);
+            Assert.That(ownership.TryBeginTraversal(), Is.False);
+            Assert.That(ownership.Mode, Is.EqualTo(VillagerMovementMode.Traversal));
+            Assert.That(ownership.TryResumeFormation(false), Is.False);
+            Assert.That(ownership.Mode, Is.EqualTo(VillagerMovementMode.Traversal));
+            Assert.That(ownership.TryResumeFormation(true), Is.True);
+            Assert.That(ownership.Mode, Is.EqualTo(VillagerMovementMode.FormationFollowing));
+        }
+
+        [Test]
+        public void TraversalZones_ProgressIdleToStagingToCrossingToRunning()
+        {
+            var state = new AuthoredTraversalState();
+            Assert.That(state.Enter(TraversalZone.A), Is.True);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Staging));
+            Assert.That(state.OwnsFollowers, Is.True);
+            state.Exit(TraversalZone.A);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Staging));
+            Assert.That(state.OwnsFollowers, Is.True);
+            Assert.That(state.Enter(TraversalZone.A), Is.False);
+            Assert.That(state.Enter(TraversalZone.B), Is.True);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Crossing));
+            Assert.That(state.OwnsFollowers, Is.True);
+            state.Exit(TraversalZone.B);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Crossing));
+            Assert.That(state.OwnsFollowers, Is.True);
+            Assert.That(state.Enter(TraversalZone.C), Is.True);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Running));
+            Assert.That(state.OwnsFollowers, Is.True);
+            Assert.That(state.CanStartNextFollower, Is.True);
+        }
+
+        [Test]
+        public void TraversalZones_CancellationPreventsAnotherFollowerStarting()
+        {
+            var state = new AuthoredTraversalState();
+            state.Enter(TraversalZone.A);
+            state.Enter(TraversalZone.B);
+            state.Enter(TraversalZone.C);
+            Assert.That(state.Enter(TraversalZone.B), Is.True);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Cancelling));
+            Assert.That(state.CanStartNextFollower, Is.False);
+        }
+
+        [Test]
+        public void TraversalState_CompletionReturnsIdleUnlessRecoveryIsPending()
+        {
+            var state = new AuthoredTraversalState();
+            state.Enter(TraversalZone.A);
+            state.Enter(TraversalZone.B);
+            state.Enter(TraversalZone.C);
+            state.Complete(false);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Idle));
+            Assert.That(state.OwnsFollowers, Is.False);
+            state.Enter(TraversalZone.A);
+            state.Complete(true);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.RecoveryPending));
+            Assert.That(state.OwnsFollowers, Is.True);
+        }
+
+        [Test]
+        public void TraversalState_NewAndRuntimeResetAreIdleWithoutOwnership()
+        {
+            var state = new AuthoredTraversalState();
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Idle));
+            Assert.That(state.OwnsFollowers, Is.False);
+            Assert.That(state.Enter(TraversalZone.A), Is.True);
+            Assert.That(state.OwnsFollowers, Is.True);
+
+            state.ResetForRuntimeSession();
+
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Idle));
+            Assert.That(state.OwnsFollowers, Is.False);
+            Assert.That(state.Enter(TraversalZone.A), Is.True);
+            Assert.That(state.Phase, Is.EqualTo(AuthoredTraversalPhase.Staging));
+        }
+
+        [Test]
+        public void RouteDeviation_WarnsInOrderAndAbandonsOnce()
+        {
+            var state = new RouteDeviationState();
+            Assert.That(state.Update(true, false, 5f, 5f, 8f, 10f), Is.EqualTo(RouteDeviationStage.Warning1));
+            Assert.That(state.Update(true, false, 8f, 5f, 8f, 10f), Is.EqualTo(RouteDeviationStage.Warning2));
+            Assert.That(state.Update(true, false, 10f, 5f, 8f, 10f), Is.EqualTo(RouteDeviationStage.Abandon));
+            Assert.That(state.Update(true, false, 1f, 5f, 8f, 10f), Is.Not.EqualTo(RouteDeviationStage.Abandon));
+        }
+
+        [Test]
+        public void RouteDeviation_OnRouteResetsEpisode()
+        {
+            var state = new RouteDeviationState();
+            state.Update(true, false, 4f, 5f, 8f, 10f);
+            Assert.That(state.Update(true, true, 1f, 5f, 8f, 10f), Is.EqualTo(RouteDeviationStage.OnRoute));
+            Assert.That(state.Elapsed, Is.Zero);
+            Assert.That(state.Update(true, false, 1f, 5f, 8f, 10f), Is.EqualTo(RouteDeviationStage.WaitingForWarning1));
         }
     }
 }

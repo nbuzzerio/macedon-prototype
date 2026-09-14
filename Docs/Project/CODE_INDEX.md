@@ -44,14 +44,23 @@ Reusable recruitment dialogue data and deterministic selection logic. Three prof
 ### VillagerRecruitmentState.cs / VillagerParty.cs / VillagerPartyRegistry.cs
 Recruitment state is separate from dialogue/world state. The small party coordinator holds the explicit Player Transform, registers followers idempotently, assigns stable reusable slot indices, and supports removal for the later abandonment pass.
 
-### VillagerFollower.cs / VillagerFormationLogic.cs
-NavMeshAgent-based following for recruited villagers. Distinct local formation offsets rotate with Player yaw; destination updates are throttled, sampled onto compatible NavMesh, and never issued while an agent is off-mesh. No combat, return-home, or route-deviation behavior is included.
+### VillagerFollower.cs / VillagerFormationLogic.cs / VillagerMovementOwnership.cs
+NavMeshAgent-based following for recruited villagers. Distinct local formation offsets rotate with Player yaw; destination updates are throttled and sampled. Explicit FormationFollowing/Traversal/ReturningHome ownership prevents competing movement writers and provides guarded authored-destination helpers.
+
+### AuthoredFollowerTraversal.cs / TraversalZoneTrigger.cs / AuthoredTraversalLogic.cs / AuthoredTraversalState.cs
+Forward-authored NPC river traversal using explicit A (staging), B (crossing corridor), and C (completion) zones. A snapshots current followers and suspends formation, B keeps them staged, and valid A → B → C progression starts deterministic root-motion-free jumps one at a time. A/B exits are intentionally state-neutral so physical trigger gaps cannot cancel progression; re-entering B while Running requests safe cancellation. Failed restoration retains traversal ownership and retries.
+
+### RaidRouteCoordinator.cs / RaidRouteVolume.cs / RouteDeviationLogic.cs / VillagerRouteDeviation.cs
+Generous trigger volumes form the authored valid corridor from village to fort. One scene coordinator aggregates Player occupancy and active traversal validity; each following villager advances a deterministic 5/8/10-second warning episode, can abandon once, release its slot, return via NavMesh to its existing Home, and become re-recruitable.
+
+### AutomaticDialogueQueue.cs
+Small shared FIFO presenter for automatic follower comments. It serializes warning/abandon lines into one TMP dialogue panel so simultaneous followers cannot overwrite one another.
 
 ### NpcLocomotionAnimator.cs / NpcLocomotionAnimationLogic.cs
 Reusable humanoid NPC presentation driver. It maps horizontal NavMeshAgent velocity to the existing `Speed` and `MotionSpeed` parameters, maintains grounded locomotion without faking jumps, disables root motion, and can assign the existing Starter Assets controller when a child visual Animator has none. It always binds the NavMeshAgent on its own root and rejects Animator references outside that root's hierarchy, auto-selecting the local Animator when exactly one exists. Jump/traversal and attack triggering remain future gameplay responsibilities.
 
 ### NpcAnimationEventReceiver.cs
-No-op NPC-side receiver for the `OnFootstep(AnimationEvent)` events embedded in the shared Starter Assets walk/run clips. It belongs beside the visual Animator, prevents missing-receiver errors, and leaves a focused future hook for NPC footstep effects without adding Player-specific components.
+NPC-side receiver for shared Starter Assets events. Footsteps remain intentionally silent; `OnLand(AnimationEvent)` now forwards a presentation callback to the locomotion driver while authored traversal remains authoritative for physical landing.
 
 ### WolfQuest.cs
 Starts the wolf quest and activates the wolf encounter.

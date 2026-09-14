@@ -26,6 +26,8 @@ namespace Macedon.Villagers
 
         public bool TryGetSlot(T follower, out int slot) => slots.TryGetValue(follower, out slot);
 
+        public IEnumerable<KeyValuePair<T, int>> Entries => slots;
+
         private int FirstAvailableSlot()
         {
             for (int candidate = 0; ; candidate++)

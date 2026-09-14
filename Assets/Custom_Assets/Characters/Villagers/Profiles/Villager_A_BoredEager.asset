@@ -21,3 +21,7 @@ MonoBehaviour:
   - You actually killed that wolf? Ha! All right. I'll follow you against the raiders.
   followingDialogue:
   - Let's go.
+  warning1Dialogue: Uh... I think we're going the wrong way.
+  warning2Dialogue: Are you sure you know where you're going?
+  abandonDialogue: I didn't sign up for this.
+  rejoinDialogue: Fine. But you're leading us the right way this time.

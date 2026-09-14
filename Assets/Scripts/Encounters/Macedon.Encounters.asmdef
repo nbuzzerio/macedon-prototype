@@ -1,5 +1,8 @@
 {
     "name": "Macedon.Encounters",
     "rootNamespace": "Macedon.Encounters",
+    "references": [
+        "Unity.TextMeshPro"
+    ],
     "autoReferenced": true
 }

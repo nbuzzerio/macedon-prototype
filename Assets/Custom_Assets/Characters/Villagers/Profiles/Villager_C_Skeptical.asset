@@ -21,3 +21,7 @@ MonoBehaviour:
   - I didn't think you'd come back from that wolf alive. Fine. If you're going after the raiders, I'm coming.
   followingDialogue:
   - Don't make me regret this.
+  warning1Dialogue: Wrong way.
+  warning2Dialogue: You're lost, aren't you?
+  abandonDialogue: I knew this was a mistake.
+  rejoinDialogue: Fine. I hope you brought a map.
