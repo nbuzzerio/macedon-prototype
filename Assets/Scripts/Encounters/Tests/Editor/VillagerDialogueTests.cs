@@ -196,6 +196,27 @@ namespace Macedon.Villagers.Tests
         }
 
         [Test]
+        public void AuthoredTravelRotation_FacesHorizontalJumpDirection()
+        {
+            Quaternion rotation = AuthoredTraversalLogic.TravelRotation(
+                new Vector3(2f, 1f, 3f),
+                new Vector3(6f, 5f, 3f),
+                Quaternion.Euler(0f, 180f, 0f));
+
+            Assert.That(Vector3.Angle(rotation * Vector3.forward, Vector3.right), Is.LessThan(0.01f));
+            Assert.That(Vector3.Angle(rotation * Vector3.up, Vector3.up), Is.LessThan(0.01f));
+        }
+
+        [Test]
+        public void AuthoredTravelRotation_KeepsFallbackWithoutHorizontalTravel()
+        {
+            Quaternion fallback = Quaternion.Euler(0f, 37f, 0f);
+            Quaternion rotation = AuthoredTraversalLogic.TravelRotation(Vector3.zero, Vector3.up * 2f, fallback);
+
+            Assert.That(Quaternion.Angle(rotation, fallback), Is.LessThan(0.01f));
+        }
+
+        [Test]
         public void AuthoredEntryArrival_UsesSampledDestinationNotAuthoredPoint()
         {
             Vector3 authored = Vector3.zero;

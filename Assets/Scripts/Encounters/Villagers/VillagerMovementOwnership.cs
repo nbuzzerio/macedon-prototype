@@ -20,5 +20,7 @@ namespace Macedon.Villagers
 
         public void BeginReturningHome() => Mode = VillagerMovementMode.ReturningHome;
         public void FinishReturningHome() => Mode = VillagerMovementMode.FormationFollowing;
+
+        public void RestoreFormationForDevelopment() => Mode = VillagerMovementMode.FormationFollowing;
     }
 }

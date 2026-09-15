@@ -8867,6 +8867,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3030171986968133739, guid: 0efadc8c714444d49a10b02f99dff28d, type: 3}
   m_PrefabInstance: {fileID: 989155795}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &995305437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 995305438}
+  m_Layer: 0
+  m_Name: Checkpoint_RiverStart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &995305438
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995305437}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 22.08, y: 0, z: 1.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1846310615}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1004791300
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15114,6 +15145,78 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3030171986968133739, guid: 0efadc8c714444d49a10b02f99dff28d, type: 3}
   m_PrefabInstance: {fileID: 1841568233}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1846310612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1846310615}
+  - component: {fileID: 1846310614}
+  - component: {fileID: 1846310613}
+  m_Layer: 0
+  m_Name: DebugCheckpoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1846310613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846310612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f6714d7de91408396c063088e033501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Macedon.Development.DevelopmentCheckpointController
+  wolfQuest: {fileID: 1063878601}
+  wolfEncounter: {fileID: 1241525029}
+  wolfHealth: {fileID: 116819012}
+  treeFall: {fileID: 1241525030}
+  exitReveal: {fileID: 0}
+  party: {fileID: 808321968}
+  villagers:
+  - {fileID: 1730423458}
+  - {fileID: 2025579095}
+  - {fileID: 1092071883}
+  riverTraversal: {fileID: 1768700118}
+  locations: {fileID: 1846310614}
+  followerNavMeshSampleRadius: 3
+--- !u!114 &1846310614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846310612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 347475165e10440ab9aab91bd941137d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Macedon.Development.DevelopmentCheckpointLocations
+  riverStart: {fileID: 995305438}
+--- !u!4 &1846310615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846310612}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21.32791, y: 1.16298, z: 30.17586}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 995305438}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1847280696
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19720,3 +19823,4 @@ SceneRoots:
   - {fileID: 1067912671}
   - {fileID: 7000000000000000000}
   - {fileID: 1618746098}
+  - {fileID: 1846310615}

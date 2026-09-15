@@ -18,6 +18,14 @@ namespace Macedon.Encounters
     {
         [SerializeField] private FallingTree[] trees = Array.Empty<FallingTree>();
         private bool hasPlayed;
+        private Quaternion[] authoredRotations;
+
+        private void Awake()
+        {
+            authoredRotations = new Quaternion[trees.Length];
+            for (int i = 0; i < trees.Length; i++)
+                authoredRotations[i] = trees[i].tree != null ? trees[i].tree.localRotation : Quaternion.identity;
+        }
 
         public void Play()
         {
@@ -25,6 +33,16 @@ namespace Macedon.Encounters
             hasPlayed = true;
             foreach (FallingTree tree in trees)
                 if (tree.tree != null) StartCoroutine(Fall(tree));
+        }
+
+        public void ApplyCompletedStateForDevelopment()
+        {
+            if (authoredRotations == null || authoredRotations.Length != trees.Length) Awake();
+            StopAllCoroutines();
+            hasPlayed = true;
+            for (int i = 0; i < trees.Length; i++)
+                if (trees[i].tree != null)
+                    trees[i].tree.localRotation = authoredRotations[i] * Quaternion.Euler(trees[i].fallRotation);
         }
 
         private static IEnumerator Fall(FallingTree entry)

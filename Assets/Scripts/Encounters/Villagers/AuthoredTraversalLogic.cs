@@ -16,6 +16,14 @@ namespace Macedon.Villagers
             return Vector3.Lerp(start, end, t) + Vector3.up * (4f * Mathf.Max(0f, arcHeight) * t * (1f - t));
         }
 
+        public static Quaternion TravelRotation(Vector3 start, Vector3 end, Quaternion fallback)
+        {
+            Vector3 horizontalDirection = Vector3.ProjectOnPlane(end - start, Vector3.up);
+            return horizontalDirection.sqrMagnitude <= 0.000001f
+                ? fallback
+                : Quaternion.LookRotation(horizontalDirection.normalized, Vector3.up);
+        }
+
         public static IEnumerable<int> PointOrder(int count, TraversalSide from)
         {
             if (from == TraversalSide.A)

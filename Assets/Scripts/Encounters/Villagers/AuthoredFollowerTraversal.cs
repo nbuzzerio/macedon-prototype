@@ -35,6 +35,35 @@ namespace Macedon.Villagers
         public bool IsRunning => traversalState.Phase != AuthoredTraversalPhase.Idle;
         public AuthoredTraversalPhase Phase => traversalState.Phase;
 
+        public bool ResetForDevelopment(out string error)
+        {
+            StopAllCoroutines();
+            var followers = new HashSet<VillagerFollower>(ownedFollowers);
+            foreach (VillagerFollower follower in armedFollowers) if (follower != null) followers.Add(follower);
+            foreach (VillagerFollower follower in recoveryPending) if (follower != null) followers.Add(follower);
+            foreach (VillagerFollower follower in followers)
+            {
+                if (follower == null || follower.MovementMode != VillagerMovementMode.Traversal) continue;
+                if (!TryRestoreFormation(follower))
+                {
+                    error = $"could not restore '{follower.name}' to formation ownership.";
+                    return false;
+                }
+            }
+
+            armedFollowers.Clear();
+            stagingDestinations.Clear();
+            ownedFollowers.Clear();
+            recoveryPending.Clear();
+            cancellationRequested = false;
+            queueRunning = false;
+            activeFollower = null;
+            nextGatherRepathTime = 0f;
+            traversalState.Reset();
+            error = null;
+            return true;
+        }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void BeginRuntimeSession() => runtimeSessionId++;
 
@@ -223,6 +252,8 @@ namespace Macedon.Villagers
             {
                 Vector3 start = follower.transform.position;
                 Vector3 end = routePoints[order[i]].position;
+                Quaternion turnStart = follower.transform.rotation;
+                Quaternion travelRotation = AuthoredTraversalLogic.TravelRotation(start, end, turnStart);
                 Log($"Follower '{follower.name}' jump {i}/{order.Count - 1}: {start} -> {end}.");
                 animationDriver?.BeginJump();
                 float elapsed = 0f;
@@ -231,10 +262,13 @@ namespace Macedon.Villagers
                 {
                     elapsed += Time.deltaTime;
                     if (elapsed > duration * 0.25f) animationDriver?.SetAirborne();
-                    follower.transform.position = AuthoredTraversalLogic.JumpPosition(start, end, elapsed / duration, jumpArcHeight);
+                    float normalizedTime = elapsed / duration;
+                    follower.transform.position = AuthoredTraversalLogic.JumpPosition(start, end, normalizedTime, jumpArcHeight);
+                    follower.transform.rotation = Quaternion.Slerp(turnStart, travelRotation, Mathf.Clamp01(normalizedTime / 0.2f));
                     yield return null;
                 }
                 follower.transform.position = end;
+                follower.transform.rotation = travelRotation;
                 animationDriver?.CompleteLanding();
                 if (cancellationRequested && TryRestoreFormation(follower))
                 {

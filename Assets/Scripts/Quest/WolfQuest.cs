@@ -59,4 +59,19 @@ public class WolfQuest : MonoBehaviour
 
         currentStage = QuestStage.RaiderThreatIntroduced;
     }
+
+    /// <summary>Development checkpoint hook which keeps quest and encounter authority coherent.</summary>
+    public void CompleteForDevelopment()
+    {
+        if (currentStage < QuestStage.WolfDefeated)
+        {
+            currentStage = QuestStage.WolfDefeated;
+            if (wolfEncounter != null) wolfEncounter.CompleteForDevelopment();
+            onWolfEncounterCompleted.Invoke();
+        }
+        else if (wolfEncounter != null)
+        {
+            wolfEncounter.CompleteForDevelopment();
+        }
+    }
 }

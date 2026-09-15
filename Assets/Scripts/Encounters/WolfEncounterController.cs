@@ -53,5 +53,14 @@ namespace Macedon.Encounters
         {
             if (boundary != null) boundary.SetEncounterActive(false);
         }
+
+
+        /// <summary>Completes encounter authority without starting presentation intended for a live kill.</summary>
+        public void CompleteForDevelopment()
+        {
+            if (state.Phase == WolfEncounterPhase.NotStarted) state.Begin();
+            if (state.Phase == WolfEncounterPhase.Active) state.Complete();
+            ReleaseBoundary();
+        }
     }
 }

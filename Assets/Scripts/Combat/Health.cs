@@ -85,4 +85,10 @@ public class Health : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    /// <summary>Development tooling entry point. Uses the normal death path and its gameplay events.</summary>
+    public void KillForDevelopment()
+    {
+        if (!isDead) Die();
+    }
 }

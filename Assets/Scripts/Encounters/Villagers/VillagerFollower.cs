@@ -149,6 +149,52 @@ namespace Macedon.Villagers
 
         public void StopAuthoredMovement() => StopAgent();
 
+        public bool TryWarpForDevelopment(Vector3 desiredPosition, float sampleRadius, out Vector3 placedPosition, out string error)
+        {
+            placedPosition = transform.position;
+            error = null;
+            if (agent == null) agent = GetComponent<NavMeshAgent>();
+            if (agent == null)
+            {
+                error = "NavMeshAgent is missing.";
+                return false;
+            }
+
+            var filter = new NavMeshQueryFilter { agentTypeID = agent.agentTypeID, areaMask = agent.areaMask };
+            if (!NavMesh.SamplePosition(desiredPosition, out NavMeshHit hit, Mathf.Max(0.1f, sampleRadius), filter))
+            {
+                error = $"no compatible NavMesh within {sampleRadius:F1} m of {desiredPosition}.";
+                return false;
+            }
+
+            Vector3 originalPosition = transform.position;
+            bool originallyEnabled = agent.enabled;
+            if (agent.enabled && agent.isOnNavMesh)
+            {
+                agent.isStopped = true;
+                if (agent.hasPath) agent.ResetPath();
+            }
+            if (agent.enabled) agent.enabled = false;
+            transform.position = hit.position;
+            agent.enabled = true;
+            if (!agent.isOnNavMesh || !agent.Warp(hit.position))
+            {
+                agent.enabled = false;
+                transform.position = originalPosition;
+                agent.enabled = originallyEnabled;
+                error = "NavMeshAgent.Warp failed; the original transform and enabled state were restored.";
+                return false;
+            }
+
+            movementOwnership.RestoreFormationForDevelopment();
+            agent.isStopped = false;
+            nextRepathTime = 0f;
+            placementWarningLogged = false;
+            targetWarningLogged = false;
+            placedPosition = hit.position;
+            return true;
+        }
+
         private bool RegisterWithParty()
         {
             if (party == null) return false;
